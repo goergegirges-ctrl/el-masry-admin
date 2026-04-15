@@ -1,0 +1,84 @@
+.add {
+    display: flex;
+    justify-content: center;
+}
+
+.add-product {
+    width: 70%;
+    margin-top: 50px;
+    color: var(--text-light);
+    font-size: 16px;
+    background-color: var(--surface);
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.add-product form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-product-name,
+.add-product-description {
+    width: 100%;
+}
+
+.add-product-name input,
+.add-product-description textarea,
+.add-product-category select,
+.add-product-price input,
+.add-stock input {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    outline: none;
+    font-family: var(--font-main);
+    background-color: var(--bg);
+    width: 100%;
+}
+
+.add-product-name input:focus,
+.add-product-description textarea:focus,
+.add-product-category select:focus,
+.add-product-price input:focus,
+.add-stock input:focus {
+    border-color: var(--secondary);
+}
+
+.add-category-price {
+    display: flex;
+    gap: 20px;
+}
+
+.add-category,
+.add-price,
+.add-stock {
+    flex: 1;
+}
+
+.add-btn {
+    width: 150px;
+    border: none;
+    padding: 12px;
+    background-color: var(--primary);
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: 0.3s;
+    align-self: flex-start;
+}
+
+.add-btn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

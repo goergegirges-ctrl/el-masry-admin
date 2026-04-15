@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Brand Colors */
+  --primary: #0B3C5D;
+  --primary-light: #114B73;
+  --secondary: #1F7A8C;
+  --secondary-light: #2A9DB4;
+
+  /* Status Colors */
+  --success: #16A34A;
+  --danger: #DC2626;
+  --warning: #F59E0B;
+
+  /* Backgrounds */
+  --bg: #F4F6F8;
+  --surface: #FFFFFF;
+  --border: #E2E8F0;
+
+  /* Typography */
+  --text: #1A1A2E;
+  --text-light: #6B7280;
+  --font-main: 'Inter', sans-serif;
+  --font-arabic: 'Cairo', sans-serif;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: 0.3s;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: var(--border);
+}
+
+.app-content {
+  margin-left: 250px;
+  min-height: calc(100vh - 70px);
+  background-color: #f7f9fc;
+  padding: 20px;
+}
+
+@media (max-width: 900px) {
+  .app-content {
+    margin-left: 70px;
+  }
+}
+
+/* Common button styles */
+button {
+  cursor: pointer;
+  transition: 0.3s;
+}

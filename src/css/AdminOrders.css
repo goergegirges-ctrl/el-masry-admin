@@ -1,0 +1,440 @@
+/* Admin Orders Redesign Styles */
+
+:root {
+  --primary-navy: #0A1628;
+  --primary-cyan: #00B4D8;
+  
+  /* Status Colors from Spec */
+  --status-pending-bg: #FEF3C7;
+  --status-pending-text: #92400E;
+  
+  --status-confirmed-bg: #DBEAFE;
+  --status-confirmed-text: #1E40AF;
+  
+  --status-out-bg: #FED7AA;
+  --status-out-text: #C2410C;
+  
+  --status-delivered-bg: #D1FAE5;
+  --status-delivered-text: #065F46;
+  
+  --status-cancelled-bg: #F3F4F6;
+  --status-cancelled-text: #6B7280;
+}
+
+/* Order List Layout */
+.admin-order-container {
+  padding: 2rem;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+.order-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .order-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Order Card - 4 Row Layout */
+.order-card-redesign {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Row 1: Header */
+.card-header-row {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.order-id-label {
+  font-weight: 700;
+  color: var(--primary-navy);
+  font-family: 'Inter', sans-serif;
+}
+
+.order-date-label {
+  font-size: 0.85rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Row 2: Customer Info */
+.card-customer-row {
+  padding: 1rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.customer-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+/* Row 3: Items & Finance Summary */
+.card-summary-row {
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 0.75rem;
+}
+
+.summary-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.summary-value {
+  font-weight: 600;
+  color: var(--primary-navy);
+}
+
+/* Row 4: Footer Actions */
+.card-footer-row {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-details-btn {
+  background-color: var(--primary-cyan);
+  color: #ffffff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.view-details-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.timestamp-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* Status Badges */
+.status-badge-redesign {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-badge-redesign.pending { background: var(--status-pending-bg); color: var(--status-pending-text); }
+.status-badge-redesign.confirmed { background: var(--status-confirmed-bg); color: var(--status-confirmed-text); }
+.status-badge-redesign.out { background: var(--status-out-bg); color: var(--status-out-text); }
+.status-badge-redesign.delivered { background: var(--status-delivered-bg); color: var(--status-delivered-text); }
+.status-badge-redesign.cancelled { background: var(--status-cancelled-bg); color: var(--status-cancelled-text); }
+
+/* Detail Page Layout Improvements */
+.detail-header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: var(--primary-cyan);
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-meta h2 {
+  margin: 0;
+  color: var(--primary-navy);
+}
+
+/* Detail Page Components */
+.admin-order-detail-container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.detail-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.detail-card-header {
+  padding: 1.25rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--primary-navy);
+}
+
+.detail-card-body {
+  padding: 1.5rem;
+}
+
+/* Products Table */
+.admin-products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-products-table th {
+  text-align: left;
+  padding: 1rem;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  color: #64748b;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.admin-products-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+/* Action Section */
+.admin-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .admin-actions-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .detail-header-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .header-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-order-container {
+    padding: 1rem;
+  }
+  
+  .order-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-timeline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-left: 2rem;
+  }
+  
+  .admin-timeline::before {
+    top: 0;
+    left: 20px;
+    width: 2px;
+    height: 100%;
+  }
+  
+  .timeline-step {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+/* Products Table Responsiveness */
+@media (max-width: 600px) {
+  .admin-products-table thead {
+    display: none;
+  }
+  
+  .admin-products-table tr {
+    display: block;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 1rem 0;
+  }
+  
+  .admin-products-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border: none;
+  }
+  
+  .admin-products-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #64748b;
+  }
+}
+
+.action-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.action-input-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.admin-input-field {
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.admin-input-field:focus {
+  border-color: var(--primary-cyan);
+}
+
+.admin-save-btn {
+  background-color: var(--primary-cyan);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+/* Timeline */
+.admin-timeline {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 2rem 0;
+  padding: 0 1rem;
+}
+
+.admin-timeline::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 3rem;
+  right: 3rem;
+  height: 2px;
+  background: #e2e8f0;
+  z-index: 1;
+}
+
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  flex: 1;
+}
+
+.step-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s;
+}
+
+.timeline-step.active .step-dot {
+  background: var(--primary-cyan);
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.2);
+}
+
+.step-label {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.timeline-step.active .step-label {
+  color: var(--primary-navy);
+  font-weight: 700;
+}

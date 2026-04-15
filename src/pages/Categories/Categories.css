@@ -1,0 +1,143 @@
+.categories-page {
+    padding: 30px;
+    width: 100%;
+}
+
+.categories-header {
+    margin-bottom: 30px;
+}
+
+.categories-header h1 {
+    font-size: 28px;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.categories-header p {
+    color: var(--text-light);
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.category-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.category-image {
+    height: 180px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    color: #cbd5e1;
+}
+
+.category-info {
+    padding: 20px;
+}
+
+.category-info h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: var(--primary);
+}
+
+.category-stats {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.stat-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #475569;
+    font-weight: 500;
+}
+
+.view-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: var(--secondary);
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.view-btn:hover {
+    background: var(--secondary-light);
+}
+
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.skeleton-card {
+    height: 320px;
+    background: #eee;
+    border-radius: 12px;
+    animation: skeleton-loading 1.5s infinite linear;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: #f3f4f6;
+    }
+
+    50% {
+        background-color: #e5e7eb;
+    }
+
+    100% {
+        background-color: #f3f4f6;
+    }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 100px 0;
+    color: #94a3b8;
+}
+
+.empty-state p {
+    margin-top: 15px;
+    font-size: 18px;
+}
