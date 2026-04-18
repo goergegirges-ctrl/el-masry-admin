@@ -1,7 +1,9 @@
 import React from 'react'
 import './Sidebar.css'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, ShoppingBag, PlusCircle, ListOrdered, LogOut, Tags, Users, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, PlusCircle, ListOrdered, LogOut, Tags, Users, BarChart3, ExternalLink } from 'lucide-react';
+
+const STORE_URL = import.meta.env.VITE_STORE_URL || 'http://localhost:5173';
 
 const Sidebar = ({ setToken }) => {
   const navigate = useNavigate();
@@ -46,6 +48,15 @@ const Sidebar = ({ setToken }) => {
       </div>
 
       <div className="sidebar-footer">
+        <a
+          href={STORE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="sidebar-option"
+        >
+          <ExternalLink size={20} />
+          <p>View Store / عرض كعميل</p>
+        </a>
         <button onClick={logout} className="sidebar-logout-btn">
           <LogOut size={20} />
           <p>Logout</p>

@@ -3,7 +3,8 @@ import axios from 'axios';
 const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
 
 const api = axios.create({
-    baseURL: url
+    baseURL: url,
+    withCredentials: true
 });
 
 // Add a request interceptor to add the JWT token to every request
@@ -12,7 +13,6 @@ api.interceptors.request.use(
         const token = localStorage.getItem('admin_token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
-            config.headers.token = token;
         }
         return config;
     },
@@ -26,9 +26,32 @@ api.interceptors.response.use(
     (response) => {
         return response;
     },
-    (error) => {
-        // You can add global error handling here if desired
-        // e.g. auto-logout for 401s if you don't want to do it per component
+    async (error) => {
+        const originalRequest = error.config;
+        
+        // If error is 401 and we haven't retried yet
+        if (error.response && error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+                // Attempt to refresh the token
+                const res = await axios.get(`${url}/api/users/refresh`, { withCredentials: true });
+                if (res.data.success) {
+                    const newToken = res.data.token;
+                    localStorage.setItem('admin_token', newToken);
+                    // Retry original request with new token
+                    originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                    return api(originalRequest);
+                }
+            } catch (refreshError) {
+                // Refresh failed, logout
+                console.error("Token refresh failed:", refreshError);
+            }
+
+            // Cleanup and logout if refresh fails
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = '/login';
+        }
         return Promise.reject(error);
     }
 );

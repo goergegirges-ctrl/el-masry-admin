@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './Login.css'
-import axios from 'axios'
+import api from '../../utility/api'
 import { toast } from 'react-toastify'
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
@@ -15,14 +15,14 @@ const Login = ({ setToken, url }) => {
         event.preventDefault();
         setLoading(true);
         try {
-            console.log("Attempting login for:", email);
-            const response = await axios.post(`${url}/api/admin/login`, { email, password });
-            console.log("LOGIN response:", response.data);
+            const response = await api.post(`/api/admin/login`, { email, password });
 
             if (response.data.success) {
                 const token = response.data.token;
+                const user = response.data.user;
                 // Store in localStorage FIRST to ensure interceptors pick it up immediately
                 localStorage.setItem("admin_token", token);
+                localStorage.setItem("admin_user", JSON.stringify(user));
                 setToken(token);
                 toast.success("Login Successful");
             } else {

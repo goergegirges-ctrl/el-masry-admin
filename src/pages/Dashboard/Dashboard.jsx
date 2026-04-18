@@ -34,12 +34,15 @@ const Dashboard = ({ url, token, setToken }) => {
             console.error("Dashboard fetch error:", error);
             if (error.response) {
                 const status = error.response.status;
-                if (status === 401 || status === 403) {
+                if (status === 401) {
                     toast.error("Session expired. Please login again.");
                     if (setToken) {
                         localStorage.removeItem("admin_token");
+                        localStorage.removeItem("admin_user");
                         setToken("");
                     }
+                } else if (status === 403) {
+                    toast.error(error.response.data?.message || "Access denied.");
                 } else if (status === 404) {
                     toast.error("Dashboard endpoint not found (404).");
                 } else {
