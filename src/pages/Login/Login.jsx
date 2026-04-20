@@ -46,8 +46,8 @@ const Login = ({ setToken, url }) => {
         <div className='login'>
             <div className="login-card">
                 <div className="login-header">
-                    <h1>Admin Panel</h1>
-                    <p>Welcome back, please login to your account.</p>
+                    <h1>El-Masry Admin</h1>
+                    <p>Enter your credentials to continue.</p>
                 </div>
 
                 <form onSubmit={onLoginHandler} className="login-form">
@@ -81,7 +81,7 @@ const Login = ({ setToken, url }) => {
                         </div>
                     </div>
                     <button type='submit' className="login-btn" disabled={loading}>
-                        {loading ? <><Loader2 className="spinner" size={18} /> Logging in...</> : "Login"}
+                        {loading ? <><Loader2 className="spinner" size={18} /> Logging in…</> : "Log in"}
                     </button>
                 </form>
             </div>

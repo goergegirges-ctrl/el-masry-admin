@@ -32,7 +32,7 @@ const Analytics = ({ url, token, setToken }) => {
 
     const handleAuthError = (err) => {
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-            toast.error("Session expired. Redirecting to login...");
+            toast.error("Session expired — please log in again.");
             if (setToken) {
                 setToken("");
                 localStorage.removeItem("admin_token");
@@ -147,8 +147,8 @@ const Analytics = ({ url, token, setToken }) => {
         <div className='analytics-page'>
             <div className="analytics-header">
                 <div>
-                    <h1>Sales & Growth Analytics</h1>
-                    <p>Detailed performance metrics for your electronics business.</p>
+                    <h1>Analytics</h1>
+                    <p>Revenue, inventory, and sales data.</p>
                 </div>
                 <button onClick={fetchAnalytics} className="refresh-btn" disabled={loading}>
                     <RefreshCw size={18} className={loading ? 'animate-spin' : ''} />
@@ -324,21 +324,21 @@ const Analytics = ({ url, token, setToken }) => {
                         <div className="extra-card">
                             <div className="card-header">
                                 <Users size={20} className="icon-ins" />
-                                <h3>Customer Insights</h3>
+                                <h3>Customer Insights <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-light)' }}>(sample data)</span></h3>
                             </div>
                             <div className="insights-list">
                                 <div className="insight-entry">
-                                    <p>Retention Rate</p>
+                                    <p>Repeat Customer Rate</p>
                                     <div className="p-bar"><div className="p-fill" style={{ width: '42%' }}></div></div>
-                                    <span>42% repeat customer rate</span>
+                                    <span>42% of customers order again</span>
                                 </div>
                                 <div className="insight-entry">
                                     <p>Peak Ordering Hours</p>
-                                    <h3>8:00 PM - 11:00 PM</h3>
+                                    <h3>8 PM – 11 PM</h3>
                                 </div>
                                 <div className="insight-entry">
-                                    <p>Top Ordering City</p>
-                                    <h3>Cairo (Greater Area)</h3>
+                                    <p>Top City</p>
+                                    <h3>Cairo</h3>
                                 </div>
                             </div>
                         </div>

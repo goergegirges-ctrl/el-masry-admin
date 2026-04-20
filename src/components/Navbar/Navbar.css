@@ -4,11 +4,12 @@
   align-items: center;
   padding: 15px 30px 15px 280px;
   /* 250px sidebar + 30px gap */
-  background-color: white;
+  background-color: var(--surface);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 99;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar-logo {
@@ -19,8 +20,14 @@
 }
 
 .admin-text {
-  color: var(--secondary);
+  color: var(--accent);
   font-weight: 400;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .navbar .profile {
@@ -28,6 +35,33 @@
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.dark-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-light);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s var(--ease-out-soft),
+              color 0.2s,
+              border-color 0.2s,
+              transform 0.15s var(--ease-out);
+}
+
+.dark-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.dark-toggle:active {
+  transform: rotate(30deg) scale(0.85);
 }
 
 @media (max-width: 900px) {

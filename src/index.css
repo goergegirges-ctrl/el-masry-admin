@@ -6,6 +6,7 @@
   --primary-light: #114B73;
   --secondary: #1F7A8C;
   --secondary-light: #2A9DB4;
+  --accent: #00B4D8;
 
   /* Status Colors */
   --success: #16A34A;
@@ -24,6 +25,42 @@
   --font-arabic: 'Cairo', sans-serif;
 }
 
+/* ─── Animation Tokens ───────────────────────────────────────────────── */
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Accessibility — disable all motion for users who need it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Dark mode token overrides — applied via html.dark class ─────────── */
+html.dark {
+  --bg: #0A1628;
+  --surface: #0F2341;
+  --border: #1B3560;
+  --text: #DDE8F5;
+  --text-light: #6B89A8;
+  --secondary: #1E9BB0;
+  --secondary-light: #23BEDB;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -35,6 +72,7 @@ body {
   min-height: 100vh;
   background-color: var(--bg);
   color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -50,15 +88,16 @@ hr {
 }
 
 .app-content {
-  margin-left: 250px;
+  margin-inline-start: 250px;
   min-height: calc(100vh - 70px);
-  background-color: #f7f9fc;
+  background-color: var(--bg);
   padding: 20px;
+  transition: background-color 0.3s ease;
 }
 
 @media (max-width: 900px) {
   .app-content {
-    margin-left: 70px;
+    margin-inline-start: 70px;
   }
 }
 
@@ -66,4 +105,24 @@ hr {
 button {
   cursor: pointer;
   transition: 0.3s;
+}
+/* Suppress focus ring on mouse click only; preserve for keyboard */
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+button::-moz-focus-inner {
+  border: 0;
 }

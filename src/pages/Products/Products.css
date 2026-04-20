@@ -4,6 +4,7 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     overflow: hidden;
     border: 1px solid var(--border);
+    animation: fade-up 0.4s var(--ease-out) 0.08s both;
 }
 
 .list-table-format {
@@ -45,7 +46,16 @@
     width: fit-content;
     font-weight: 600;
     font-size: 12px;
-    transition: 0.3s;
+    transition: transform 0.12s var(--ease-out), opacity 0.15s;
+    user-select: none;
+}
+
+.status-toggle:hover {
+    opacity: 0.85;
+}
+
+.status-toggle:active {
+    transform: scale(0.92);
 }
 
 .active {
@@ -82,7 +92,7 @@
 }
 
 .edit-link:hover {
-    background-color: #ecfeff;
+    background-color: rgba(0, 180, 216, 0.08);
 }
 
 .delete-action {
@@ -94,7 +104,7 @@
 }
 
 .delete-action:hover {
-    background-color: #fef2f2;
+    background-color: rgba(220, 38, 38, 0.07);
 }
 
 @media (max-width: 900px) {
@@ -131,15 +141,25 @@
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: background 0.18s var(--ease-out),
+                color 0.18s,
+                border-color 0.18s,
+                transform 0.15s var(--ease-out),
+                box-shadow 0.18s;
     display: flex;
     align-items: center;
     gap: 6px;
+    user-select: none;
 }
 
 .category-tab:hover {
     background: var(--bg);
     border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.category-tab:active {
+    transform: scale(0.96);
 }
 
 .category-tab.active {
@@ -147,6 +167,55 @@
     color: #fff;
     border-color: #00B4D8;
     box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+}
+
+/* Search Bar */
+.products-search-wrap {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.products-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.products-search-input {
+    width: 100%;
+    padding: 10px 40px 10px 36px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-main);
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.products-search-input::placeholder {
+    color: var(--text-light);
+}
+
+.products-search-input:focus {
+    border-color: var(--accent);
+}
+
+.products-search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 14px;
+    line-height: 1;
+    padding: 2px;
 }
 
 .category-tab .count {

@@ -23,7 +23,7 @@ const CustomerDetails = ({ url, token }) => {
         } catch (error) {
             console.error(error);
             if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                toast.error("Session expired.");
+                toast.error("Session expired — please log in again.");
                 if (token && localStorage.getItem("admin_token")) {
                     localStorage.removeItem("admin_token");
                     window.location.reload(); // Force App to re-check token

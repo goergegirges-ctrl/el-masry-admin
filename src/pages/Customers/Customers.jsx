@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import './Customers.css'
 import api from '../../utility/api'
 import { toast } from 'react-toastify'
@@ -12,10 +11,7 @@ const Customers = ({ url, token, setToken }) => {
 
     const fetchCustomers = async () => {
         try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_BACKEND_URL}/api/admin/customers`,
-                { headers: { token } }
-            )
+            const response = await api.get('/api/admin/customers')
             if (response.data.success) {
                 setCustomers(response.data.customers);
             } else {
@@ -23,33 +19,21 @@ const Customers = ({ url, token, setToken }) => {
             }
         } catch (error) {
             console.error(error);
-            if (error.response) {
-                const status = error.response.status;
-                if (status === 401 || status === 403) {
-                    toast.error("Session expired. Please login again.");
-                    if (setToken) { setToken(""); localStorage.removeItem("admin_token"); }
-                } else {
-                    toast.error(`Server error (${status})`);
-                }
-            } else {
-                toast.error("Cannot reach server on port 4000");
-            }
+            toast.error("Error fetching customers");
         } finally {
             setLoading(false);
         }
     }
 
     useEffect(() => {
-        if (token) {
-            fetchCustomers();
-        }
-    }, [token]);
+        fetchCustomers();
+    }, []);
 
     return (
         <div className='customers-page'>
             <div className="customers-header">
-                <h1>Customer Management</h1>
-                <p>Track customer orders and purchasing patterns.</p>
+                <h1>Customers</h1>
+                <p>Order history and purchase data by customer.</p>
             </div>
 
             <div className="customers-list">

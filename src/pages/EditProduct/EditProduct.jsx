@@ -17,7 +17,9 @@ const EditProduct = ({ url, token, setToken }) => {
         category: "Other",
         stock: 0,
         condition: "Original",
-        isActive: true
+        isActive: true,
+        brand: "",
+        sku: "",
     })
 
     const fetchProductDetails = useCallback(async () => {
@@ -32,7 +34,9 @@ const EditProduct = ({ url, token, setToken }) => {
                     category: product.category,
                     stock: product.stock,
                     condition: product.condition || "Original",
-                    isActive: product.isActive
+                    isActive: product.isActive,
+                    brand: product.brand || "",
+                    sku: product.sku || "",
                 });
                 setImageUrl((product.images && product.images.length > 0) ? product.images[0] : (product.image || ""));
             }
@@ -67,7 +71,9 @@ const EditProduct = ({ url, token, setToken }) => {
             category: data.category,
             stock: Number(data.stock),
             condition: data.condition,
-            isActive: data.isActive
+            isActive: data.isActive,
+            brand: data.brand.trim() || null,
+            sku:   data.sku.trim()   || null,
         }
 
         if (imageUrl && imageUrl.trim() !== '') {
@@ -85,7 +91,7 @@ const EditProduct = ({ url, token, setToken }) => {
         } catch (error) {
             console.error("Update Product Error:", error);
             if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                toast.error("Session expired.");
+                toast.error("Session expired — please log in again.");
                 if (setToken) { localStorage.removeItem("admin_token"); setToken(""); }
             } else {
                 toast.error("Error updating product");
@@ -123,6 +129,17 @@ const EditProduct = ({ url, token, setToken }) => {
                     <div className="add-product-name flex-col">
                         <p>Product name</p>
                         <input onChange={onChangeHandler} value={data.name} type="text" name='name' placeholder='Type here' required />
+                    </div>
+
+                    <div className="add-category-price">
+                        <div className="add-category flex-col">
+                            <p>Brand <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(optional)</span></p>
+                            <input onChange={onChangeHandler} value={data.brand} type="text" name='brand' placeholder='e.g. Samsung, Hisense' />
+                        </div>
+                        <div className="add-price flex-col">
+                            <p>SKU / MPN <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(optional)</span></p>
+                            <input onChange={onChangeHandler} value={data.sku} type="text" name='sku' placeholder='e.g. BN44-00442A' />
+                        </div>
                     </div>
 
                     <div className="add-product-description flex-col">
@@ -165,11 +182,11 @@ const EditProduct = ({ url, token, setToken }) => {
                     <div className="flex-col">
                         <label className='flex-row' style={{ display: 'flex', gap: '10px', alignItems: 'center', cursor: 'pointer' }}>
                             <input type="checkbox" name="isActive" checked={data.isActive} onChange={onChangeHandler} style={{ width: '20px', height: '20px' }} />
-                            <span>Active (Visible on Frontend)</span>
+                            <span>Active (visible to customers)</span>
                         </label>
                     </div>
 
-                    <button type='submit' className='add-btn'>UPDATE PRODUCT</button>
+                    <button type='submit' className='add-btn'>Save Changes</button>
                 </form>
             </div>
         </div>

@@ -13,7 +13,9 @@ const AddProduct = ({ url, token, setToken }) => {
         category: "كوفات",
         stock: 0,
         condition: "Original",
-        manualCategory: ""
+        manualCategory: "",
+        brand: "",
+        sku: "",
     })
 
     const onChangeHandler = (event) => {
@@ -32,8 +34,10 @@ const AddProduct = ({ url, token, setToken }) => {
             category: data.manualCategory ? data.manualCategory : data.category,
             stock: Number(data.stock),
             condition: data.condition,
-            images: [imageUrl], // Sending as array of hosted URLs
-            isActive: true
+            images: [imageUrl],
+            isActive: true,
+            ...(data.brand.trim() && { brand: data.brand.trim() }),
+            ...(data.sku.trim()   && { sku:   data.sku.trim()   }),
         }
 
         try {
@@ -46,7 +50,9 @@ const AddProduct = ({ url, token, setToken }) => {
                     category: "كوفات",
                     stock: 0,
                     condition: "Original",
-                    manualCategory: ""
+                    manualCategory: "",
+                    brand: "",
+                    sku: "",
                 })
                 setImageUrl("");
                 toast.success(response.data.message);
@@ -56,7 +62,7 @@ const AddProduct = ({ url, token, setToken }) => {
         } catch (error) {
             console.error("Add Product Error:", error);
             if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                toast.error("Session expired. Please login again.");
+                toast.error("Session expired — please log in again.");
                 if (setToken) { localStorage.removeItem("admin_token"); setToken(""); }
             } else {
                 toast.error("Error adding product");
@@ -98,6 +104,16 @@ const AddProduct = ({ url, token, setToken }) => {
                         <p>Product name</p>
                         <input onChange={onChangeHandler} value={data.name} type="text" name='name' placeholder='Type here' required />
                     </div>
+                    <div className="add-category-price">
+                        <div className="add-category flex-col">
+                            <p>Brand <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(optional)</span></p>
+                            <input onChange={onChangeHandler} value={data.brand} type="text" name='brand' placeholder='e.g. Samsung, Hisense' />
+                        </div>
+                        <div className="add-price flex-col">
+                            <p>SKU / MPN <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(optional)</span></p>
+                            <input onChange={onChangeHandler} value={data.sku} type="text" name='sku' placeholder='e.g. BN44-00442A' />
+                        </div>
+                    </div>
                     <div className="add-product-description flex-col">
                         <p>Product description</p>
                         <textarea onChange={onChangeHandler} value={data.description} name="description" rows="6" placeholder='Write content here' required></textarea>
@@ -136,11 +152,11 @@ const AddProduct = ({ url, token, setToken }) => {
                     </div>
 
                     <div className="add-product-description flex-col">
-                        <p>Manual Category Override (Optional)</p>
-                        <input onChange={onChangeHandler} value={data.manualCategory} type="text" name='manualCategory' placeholder='Type category manually' />
+                        <p>Custom Category <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(optional — overrides the dropdown)</span></p>
+                        <input onChange={onChangeHandler} value={data.manualCategory} type="text" name='manualCategory' placeholder='e.g. محركات, سماعات' />
                     </div>
 
-                    <button type='submit' className='add-btn'>ADD PRODUCT</button>
+                    <button type='submit' className='add-btn'>Add Product</button>
                 </form>
             </div>
         </div>

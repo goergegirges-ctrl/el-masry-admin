@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Dashboard.css'
 import api from '../../utility/api';
 import { toast } from 'react-toastify'
-import { Package, ListOrdered, DollarSign, AlertCircle, TrendingUp } from 'lucide-react';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 import { assets } from '../../assets/assets'
 
 const Dashboard = ({ url, token, setToken }) => {
@@ -18,24 +18,21 @@ const Dashboard = ({ url, token, setToken }) => {
         lowStockItems: []
     });
     const [loading, setLoading] = useState(true);
+    const [gaugeActive, setGaugeActive] = useState(false);
 
     const fetchStats = async () => {
         try {
-            console.log("Fetching Dashboard Stats...");
             const response = await api.get(`/api/order/dashboard`);
-            console.log("Dashboard API response:", response.data);
-
             if (response.data.success) {
                 setStats(response.data.stats);
             } else {
                 toast.error(response.data.message || "Error fetching stats");
             }
         } catch (error) {
-            console.error("Dashboard fetch error:", error);
             if (error.response) {
                 const status = error.response.status;
                 if (status === 401) {
-                    toast.error("Session expired. Please login again.");
+                    toast.error("Session expired — please log in again.");
                     if (setToken) {
                         localStorage.removeItem("admin_token");
                         localStorage.removeItem("admin_user");
@@ -59,126 +56,149 @@ const Dashboard = ({ url, token, setToken }) => {
     }
 
     useEffect(() => {
-        if (token) {
-            fetchStats();
-        }
+        if (token) fetchStats();
     }, [token]);
+
+    useEffect(() => {
+        if (!loading) {
+            const id = requestAnimationFrame(() => setGaugeActive(true));
+            return () => cancelAnimationFrame(id);
+        }
+    }, [loading]);
+
+    const maxSales = Math.max(stats.recentSales, stats.previousSales, 1);
+    const recentPct  = (stats.recentSales  / maxSales) * 100;
+    const previousPct = (stats.previousSales / maxSales) * 100;
+    const growthPositive = parseFloat(stats.growthRate) >= 0;
+
+    const today = new Date().toLocaleDateString('en-GB', {
+        day: '2-digit', month: 'short', year: 'numeric'
+    });
 
     return (
         <div className='dashboard'>
-            <h1>Admin Dashboard</h1>
-
-            <div className="dashboard-stats">
-                {/* Revenue Card */}
-                <div className="stat-card revenue">
-                    <div className="stat-icon-bg"><DollarSign size={24} color="#16a34a" /></div>
-                    <div className="stat-info">
-                        <p className="stat-label">Total Revenue</p>
-                        {loading ? <div className="skeleton-text short"></div> : (
-                            <>
-                                <h3>{stats.totalRevenue.toLocaleString()} <span className="currency">EGP</span></h3>
-                                <div className={`growth-indicator ${parseFloat(stats.growthRate) >= 0 ? 'positive' : 'negative'}`}>
-                                    <TrendingUp size={14} />
-                                    <span>{stats.growthRate}% monthly</span>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
-
-                {/* Orders Card */}
-                <div className="stat-card orders">
-                    <div className="stat-icon-bg"><ListOrdered size={24} color="#0B3C5D" /></div>
-                    <div className="stat-info">
-                        <p className="stat-label">Total Orders</p>
-                        {loading ? <div className="skeleton-text short"></div> : <h3>{stats.totalOrders}</h3>}
-                        <p className="sub-stat">{stats.pendingOrders} pending</p>
-                    </div>
-                </div>
-
-                {/* Products Card */}
-                <div className="stat-card products">
-                    <div className="stat-icon-bg"><Package size={24} color="#1F7A8C" /></div>
-                    <div className="stat-info">
-                        <p className="stat-label">Total Products</p>
-                        {loading ? <div className="skeleton-text short"></div> : <h3>{stats.totalProducts}</h3>}
-                    </div>
-                </div>
-
-                {/* Low Stock Card */}
-                <div className="stat-card alert">
-                    <div className="stat-icon-bg"><AlertCircle size={24} color="#DC2626" /></div>
-                    <div className="stat-info">
-                        <p className="stat-label">Low Stock Alerts</p>
-                        {loading ? <div className="skeleton-text short"></div> : <h3 className={stats.lowStockCount > 0 ? 'text-danger' : ''}>{stats.lowStockCount}</h3>}
-                    </div>
-                </div>
+            <div className="dashboard-header">
+                <h1>Dashboard</h1>
+                <span className="dashboard-date">{today}</span>
             </div>
 
-            <div className="dashboard-content">
-                <div className="analytics-section">
-                    <h2>Sales Performance</h2>
-                    {loading ? (
-                        <div className="skeleton-table"></div>
-                    ) : (
-                        <div className="sales-chart-container">
-                            <div className="chart-bars">
-                                <div className="chart-bar-group">
-                                    <div className="bar previous" style={{ height: `${(stats.recentSales === 0 && stats.previousSales === 0) ? 20 : (stats.previousSales / (Math.max(stats.recentSales, stats.previousSales) || 1) * 100)}%` }}></div>
-                                    <span>Prev. 30 Days</span>
-                                </div>
-                                <div className="chart-bar-group">
-                                    <div className="bar current" style={{ height: `${(stats.recentSales === 0 && stats.previousSales === 0) ? 20 : (stats.recentSales / (Math.max(stats.recentSales, stats.previousSales) || 1) * 100)}%` }}></div>
-                                    <span>Last 30 Days</span>
-                                </div>
-                            </div>
-                            <div className="chart-legend">
-                                <p>Monthly comparison showing revenue movement.</p>
-                            </div>
+            <div className="metric-rail">
+                <div className="metric-cell">
+                    <span className="metric-label accent">Total Revenue</span>
+                    {loading
+                        ? <div className="skeleton metric-skel-lg" />
+                        : <div className="metric-value-lg accent">
+                            {stats.totalRevenue.toLocaleString()}
+                            <span className="metric-currency">EGP</span>
+                          </div>
+                    }
+                    {!loading && (
+                        <div className={`metric-growth ${growthPositive ? 'pos' : 'neg'}`}>
+                            {growthPositive
+                                ? <TrendingUp size={12} strokeWidth={2.5} />
+                                : <TrendingDown size={12} strokeWidth={2.5} />
+                            }
+                            <span>{Math.abs(parseFloat(stats.growthRate))}% this month</span>
                         </div>
                     )}
                 </div>
 
-                <div className="low-stock-section">
-                    <h2>Low Stock Items (Stock &lt; 5)</h2>
-                    {loading ? (
-                        <div className="skeleton-table"></div>
-                    ) : stats.lowStockCount > 0 ? (
-                        <div className="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Image</th>
-                                        <th>Name</th>
-                                        <th>Stock</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {stats.lowStockItems.map((item, index) => {
-                                        const productImg = (item.images && item.images.length > 0)
-                                            ? item.images[0]
-                                            : assets.upload_area;
+                <div className="metric-cell">
+                    <span className="metric-label">Total Orders</span>
+                    {loading
+                        ? <div className="skeleton metric-skel-md" />
+                        : <div className="metric-value-md">{stats.totalOrders.toLocaleString()}</div>
+                    }
+                    {!loading && (
+                        <span className="metric-sub">{stats.pendingOrders} pending</span>
+                    )}
+                </div>
 
-                                        return (
-                                            <tr key={index}>
-                                                <td><img src={productImg} alt="" className='list-img' onError={(e) => e.target.src = assets.upload_area} /></td>
-                                                <td>{item.name}</td>
-                                                <td><span className='stock-badge low'>{item.stock}</span></td>
-                                                <td><a href={`/products/edit/${item.id}`} className="edit-link">Edit</a></td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                    ) : (
-                        <div className="empty-state">
-                            <p>All items are well stocked!</p>
-                        </div>
+                <div className="metric-cell">
+                    <span className="metric-label">Products</span>
+                    {loading
+                        ? <div className="skeleton metric-skel-md" />
+                        : <div className="metric-value-md">{stats.totalProducts.toLocaleString()}</div>
+                    }
+                </div>
+
+                <div className="metric-cell">
+                    <span className="metric-label">Low Stock</span>
+                    {loading
+                        ? <div className="skeleton metric-skel-md" />
+                        : <div className={`metric-value-md ${stats.lowStockCount > 0 ? 'alert' : ''}`}>
+                            {stats.lowStockCount}
+                          </div>
+                    }
+                    {!loading && stats.lowStockCount > 0 && (
+                        <span className="metric-sub alert">needs attention</span>
                     )}
                 </div>
             </div>
+
+            <div className="section-divider">
+                <span>Sales Comparison</span>
+            </div>
+
+            <div className="sales-comparison">
+                <div className="gauge-row">
+                    <span className="gauge-period">Prev. 30 Days</span>
+                    {loading
+                        ? <div className="skeleton gauge-amount-skel" />
+                        : <span className="gauge-amount">{stats.previousSales.toLocaleString()} EGP</span>
+                    }
+                    <div className="gauge-track">
+                        <div
+                            className="gauge-fill prev"
+                            style={{ width: gaugeActive ? `${previousPct}%` : '0%' }}
+                        />
+                    </div>
+                </div>
+                <div className="gauge-row">
+                    <span className="gauge-period">Last 30 Days</span>
+                    {loading
+                        ? <div className="skeleton gauge-amount-skel" />
+                        : <span className="gauge-amount accent">{stats.recentSales.toLocaleString()} EGP</span>
+                    }
+                    <div className="gauge-track">
+                        <div
+                            className="gauge-fill current"
+                            style={{ width: gaugeActive ? `${recentPct}%` : '0%' }}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div className="section-divider">
+                <span>Low Stock Alerts</span>
+            </div>
+
+            {loading ? (
+                <div className="skeleton alert-skel" />
+            ) : stats.lowStockCount > 0 ? (
+                <div className="alert-list">
+                    {stats.lowStockItems.map((item, index) => {
+                        const productImg = (item.images && item.images.length > 0)
+                            ? item.images[0]
+                            : assets.upload_area;
+                        return (
+                            <div key={index} className="alert-row">
+                                <img
+                                    src={productImg}
+                                    alt=""
+                                    className="alert-avatar"
+                                    onError={(e) => e.target.src = assets.upload_area}
+                                />
+                                <span className="alert-name">{item.name}</span>
+                                <span className="stock-chip">{item.stock} left</span>
+                                <a href={`/products/edit/${item.id}`} className="alert-edit">Edit →</a>
+                            </div>
+                        );
+                    })}
+                </div>
+            ) : (
+                <div className="alert-empty">All items are well stocked</div>
+            )}
         </div>
     )
 }

@@ -21,24 +21,273 @@
   --status-cancelled-text: #6B7280;
 }
 
-/* Order List Layout */
+/* ─── Order List Layout ──────────────────────────────────────────────── */
+
 .admin-order-container {
-  padding: 2rem;
-  background-color: #f8fafc;
-  min-height: 100vh;
+  padding: 32px 40px;
+  animation: fade-up 0.4s var(--ease-out) both;
 }
 
+/* Page header */
+.order-page-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.order-page-header h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin: 0;
+}
+
+.order-total-count {
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* Filter bar */
+.order-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.order-search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.order-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  pointer-events: none;
+}
+
+.order-search-input {
+  width: 100%;
+  padding: 8px 32px 8px 34px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-main);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.order-search-input:focus {
+  border-color: var(--accent);
+}
+
+.order-search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.order-status-filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-main);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+}
+
+.order-status-filter-select:focus {
+  border-color: var(--accent);
+}
+
+/* Table */
+.order-table-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.order-table thead tr {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.order-table th {
+  padding: 10px 14px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-light);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.order-table tbody tr.order-row {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s var(--ease-out-soft);
+  cursor: default;
+}
+
+.order-table tbody tr.order-row:last-child {
+  border-bottom: none;
+}
+
+.order-table tbody tr.order-row:hover {
+  background: var(--bg);
+}
+
+.order-table td {
+  padding: 10px 14px;
+  vertical-align: middle;
+  color: var(--text);
+}
+
+.order-id-cell {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-date-cell {
+  white-space: nowrap;
+  color: var(--text-light);
+  font-size: 12px;
+}
+
+.order-customer-cell {
+  min-width: 140px;
+}
+
+.oc-name {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.oc-phone {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.order-city-cell {
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.order-items-cell {
+  text-align: center;
+  color: var(--text-light);
+}
+
+.order-total-cell {
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Status select in table */
+.order-status-sel {
+  appearance: none;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 24px 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-main);
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23000' fill-opacity='0.4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
+}
+
+.ss-pending           { background: var(--status-pending-bg);   color: var(--status-pending-text); }
+.ss-confirmed         { background: var(--status-confirmed-bg);  color: var(--status-confirmed-text); }
+.ss-out-for-delivery  { background: var(--status-out-bg);        color: var(--status-out-text); }
+.ss-delivered         { background: var(--status-delivered-bg);  color: var(--status-delivered-text); }
+.ss-cancelled         { background: var(--status-cancelled-bg);  color: var(--status-cancelled-text); }
+
+.order-action-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.order-view-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.15s var(--ease-out-soft),
+              border-color 0.15s,
+              transform 0.12s var(--ease-out);
+  white-space: nowrap;
+}
+
+.order-view-btn:hover {
+  background: rgba(0, 180, 216, 0.1);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.order-view-btn:active {
+  transform: scale(0.95);
+}
+
+.order-empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+/* ─── Legacy card grid (unused, kept for reference) ─────────────────── */
 .order-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 1.5rem;
   margin-top: 1.5rem;
-}
-
-@media (max-width: 480px) {
-  .order-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Order Card - 4 Row Layout */
@@ -380,6 +629,20 @@
   border: none;
   cursor: pointer;
   margin-top: 1rem;
+  transition: transform 0.12s var(--ease-out), opacity 0.15s;
+}
+
+.admin-save-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.admin-save-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.admin-save-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 /* Timeline */

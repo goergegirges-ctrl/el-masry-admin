@@ -33,8 +33,8 @@ const Categories = ({ url, token }) => {
     return (
         <div className='categories-page'>
             <div className="categories-header">
-                <h1>Categories Management</h1>
-                <p>Overview of all product categories and stock counts.</p>
+                <h1>Categories</h1>
+                <p>All product categories with stock counts.</p>
             </div>
 
             {loading ? (

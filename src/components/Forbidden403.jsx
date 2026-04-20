@@ -10,15 +10,14 @@ const Forbidden403 = () => {
         <h1 className="text-9xl font-extrabold text-red-500 animate-pulse">403</h1>
         <h2 className="text-3xl font-bold">Access Denied</h2>
         <p className="text-lg text-gray-600">
-          Oops! It seems you don't have permission to access this administrative area. 
-          Please contact the system administrator if you believe this is a mistake.
+          Your account doesn't have admin access. Log in with an admin account to continue.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button 
+          <button
             onClick={() => navigate('/login')}
             className="px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-lg"
           >
-            Login as Admin
+            Log in as admin
           </button>
           <button 
             onClick={() => window.location.href = 'http://localhost:5173'} // Redirect to frontend root

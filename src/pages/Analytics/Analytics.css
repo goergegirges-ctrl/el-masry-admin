@@ -1,6 +1,7 @@
 .analytics-page {
     padding: 30px;
     width: 100%;
+    animation: fade-up 0.4s var(--ease-out) both;
 }
 
 .analytics-header {
@@ -20,10 +21,10 @@
 }
 
 .chart-card {
-    background: white;
+    background: var(--surface);
+    border: 1px solid var(--border);
     padding: 25px;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .card-header {
@@ -63,7 +64,7 @@
 .bar-fill {
     width: 100%;
     border-radius: 8px 8px 0 0;
-    transition: height 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: height 0.8s var(--ease-out);
     position: relative;
     cursor: pointer;
 }

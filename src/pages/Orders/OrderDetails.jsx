@@ -25,7 +25,7 @@ const OrderDetails = () => {
   const fetchOrderDetails = async () => {
     setLoading(true);
     try {
-      const response = await api.get(`/api/order/${id}`);
+      const response = await api.get(`/api/admin/order/${id}`);
       if (response.data.success) {
         setOrder(response.data.data);
       } else {
@@ -44,8 +44,8 @@ const OrderDetails = () => {
     fetchOrderDetails();
   }, [id]);
 
-  if (loading) return <div className="admin-order-container">Loading details...</div>;
-  if (!order) return <div className="admin-order-container">Order not found.</div>;
+  if (loading) return <div className="admin-order-container">Loading order…</div>;
+  if (!order) return <div className="admin-order-container">Order not found — it may have been deleted.</div>;
 
   return (
     <div className="admin-order-container">

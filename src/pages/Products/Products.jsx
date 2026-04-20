@@ -40,17 +40,18 @@ const Products = ({ url, token, setToken }) => {
         return tabs;
     }, [list]);
 
-    const filteredProducts = list.filter(product => {
-        const matchesSearch = !searchQuery.trim() || 
-            product.name?.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
-            product.category?.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
-            product.sku?.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
-            product.brand?.toLowerCase().includes(searchQuery.toLowerCase().trim());
+    const filteredProducts = useMemo(() => list.filter(product => {
+        const q = searchQuery.trim().toLowerCase();
+        const matchesSearch = !q ||
+            product.name?.toLowerCase().includes(q) ||
+            product.category?.toLowerCase().includes(q) ||
+            product.sku?.toLowerCase().includes(q) ||
+            product.brand?.toLowerCase().includes(q);
 
         const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
 
         return matchesSearch && matchesCategory;
-    });
+    }), [list, searchQuery, selectedCategory]);
 
     const fetchList = async () => {
         try {
@@ -79,8 +80,9 @@ const Products = ({ url, token, setToken }) => {
         }
     }
 
-    const removeProduct = async (productId) => {
-        if (!window.confirm("Are you sure you want to remove this product?")) return;
+    const removeProduct = async (productId, productName) => {
+        const label = productName ? `"${productName}"` : "this product";
+        if (!window.confirm(`Delete ${label}? This cannot be undone.`)) return;
         try {
             const response = await api.post(`/api/product/remove`, { id: productId });
             if (response.data.success) {
@@ -116,7 +118,7 @@ const Products = ({ url, token, setToken }) => {
         } catch (error) {
             console.error("Toggle Featured Error:", error);
             if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                toast.error("Session expired.");
+                toast.error("Session expired — please log in again.");
                 if (setToken) { localStorage.removeItem("admin_token"); setToken(""); }
             } else {
                 toast.error("Error updating featured status");
@@ -141,7 +143,7 @@ const Products = ({ url, token, setToken }) => {
         } catch (error) {
             console.error("Toggle Active Error:", error);
             if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                toast.error("Session expired.");
+                toast.error("Session expired — please log in again.");
                 if (setToken) { localStorage.removeItem("admin_token"); setToken(""); }
             } else {
                 toast.error("Error updating status");
@@ -156,7 +158,7 @@ const Products = ({ url, token, setToken }) => {
     return (
         <div className='list add flex-col'>
             <div className='header-row' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <p>All Products List <span style={{ color: '#999', fontSize: '14px', fontWeight: '400' }}>({filteredProducts.length} products)</span></p>
+                <p>Products <span style={{ color: '#999', fontSize: '14px', fontWeight: '400' }}>({filteredProducts.length})</span></p>
             </div>
 
             <div className="category-tabs">
@@ -171,26 +173,17 @@ const Products = ({ url, token, setToken }) => {
                 ))}
             </div>
 
-            <div style={{ position: "relative", marginBottom: "16px" }}>
-                <span style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)" }}>🔍</span>
+            <div className="products-search-wrap">
+                <span className="products-search-icon">🔍</span>
                 <input
                     type="text"
                     placeholder="Search by name, category, SKU, or brand..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    style={{
-                        width: "100%",
-                        padding: "10px 40px 10px 36px",
-                        border: "1px solid #ddd",
-                        borderRadius: "8px",
-                        fontSize: "14px"
-                    }}
+                    className="products-search-input"
                 />
                 {searchQuery && (
-                    <span
-                        onClick={() => setSearchQuery("")}
-                        style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", cursor: "pointer", color: "#999" }}
-                    >✕</span>
+                    <span onClick={() => setSearchQuery("")} className="products-search-clear">✕</span>
                 )}
             </div>
             <div className="list-table">
@@ -200,7 +193,7 @@ const Products = ({ url, token, setToken }) => {
                     <b>Category</b>
                     <b>Price</b>
                     <b>Stock</b>
-                    <b>Cond.</b>
+                    <b><abbr title="Condition" style={{ textDecoration: 'none' }}>Cond.</abbr></b>
                     <b>Active</b>
                     <b>Featured</b>
                     <b>Action</b>
@@ -229,7 +222,7 @@ const Products = ({ url, token, setToken }) => {
                             </p>
                             <div className='list-actions'>
                                 <Link to={`/products/edit/${item.id}`} className='edit-link'>Edit</Link>
-                                <p onClick={() => removeProduct(item.id)} className='cursor delete-action'>Delete</p>
+                                <p onClick={() => removeProduct(item.id, item.name)} className='cursor delete-action'>Delete</p>
                             </div>
                         </div>
                     )
