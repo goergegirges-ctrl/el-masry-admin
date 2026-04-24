@@ -58,7 +58,7 @@ const Customers = ({ url, token, setToken }) => {
                             </thead>
                             <tbody>
                                 {customers.map((cust, index) => (
-                                    <tr key={cust._id}>
+                                    <tr key={cust.id}>
                                         <td>
                                             <div className="cust-cell">
                                                 <div className="avatar"><User size={20} /></div>
@@ -97,7 +97,7 @@ const Customers = ({ url, token, setToken }) => {
                                             {cust.lastOrderDate ? new Date(cust.lastOrderDate).toLocaleDateString() : '-'}
                                         </td>
                                         <td>
-                                            <Link to={`/customers/${cust._id}`} className="view-btn">
+                                            <Link to={`/customers/${cust.id}`} className="view-btn">
                                                 <Eye size={16} /> View
                                             </Link>
                                         </td>

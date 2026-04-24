@@ -42,7 +42,7 @@
     align-items: flex-end;
     gap: 40px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #edf2f7;
+    border-bottom: 1px solid var(--line-100);
 }
 
 .bar-item {
@@ -70,7 +70,7 @@
 }
 
 .bar-fill.prev {
-    background: #cbd5e1;
+    background: var(--ink-300);
 }
 
 .bar-fill.current {
@@ -87,8 +87,8 @@
     top: -40px;
     left: 50%;
     transform: translateX(-50%);
-    background: #1e293b;
-    color: white;
+    background: var(--navy-700);
+    color: #fff;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 12px;
@@ -115,13 +115,13 @@
 }
 
 .growth-tag.up {
-    background: #f0fdf4;
-    color: #16a34a;
+    background: var(--success-bg);
+    color: var(--success);
 }
 
 .growth-tag.down {
-    background: #fef2f2;
-    color: #dc2626;
+    background: var(--danger-bg);
+    color: var(--danger);
 }
 
 .stats-side {
@@ -131,17 +131,17 @@
 }
 
 .stat-small-card {
-    background: white;
+    background: var(--surface);
     padding: 20px;
     border-radius: 12px;
     display: flex;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-md);
 }
 
 .stat-small-card .icon-rev {
-    color: #16a34a;
+    color: var(--success);
 }
 
 .stat-small-card .icon-ord {
@@ -159,15 +159,15 @@
 
 .stat-small-card small {
     font-size: 14px;
-    color: #94a3b8;
+    color: var(--ink-300);
     font-weight: 400;
 }
 
 .delivery-insights {
-    background: white;
+    background: var(--surface);
     padding: 30px;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-md);
 }
 
 .insights-grid {
@@ -179,7 +179,7 @@
 
 .progress-bar {
     height: 8px;
-    background: #f1f5f9;
+    background: var(--line-100);
     border-radius: 4px;
     margin: 15px 0;
     overflow: hidden;
@@ -209,10 +209,10 @@
 }
 
 .extra-card {
-    background: white;
+    background: var(--surface);
     padding: 24px;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-md);
 }
 
 .table-responsive {
@@ -228,14 +228,14 @@
 .extra-card th {
     text-align: left;
     padding: 12px 8px;
-    border-bottom: 1px solid #edf2f7;
-    color: #64748b;
+    border-bottom: 1px solid var(--line-100);
+    color: var(--ink-500);
     font-size: 13px;
 }
 
 .extra-card td {
     padding: 12px 8px;
-    border-bottom: 1px solid #edf2f7;
+    border-bottom: 1px solid var(--line-100);
     font-size: 14px;
 }
 
@@ -253,13 +253,13 @@
 
 .insight-entry p {
     font-size: 14px;
-    color: #64748b;
+    color: var(--ink-500);
     margin-bottom: 8px;
 }
 
 .p-bar {
     height: 8px;
-    background: #f1f5f9;
+    background: var(--line-100);
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 6px;
@@ -267,7 +267,7 @@
 
 .p-fill {
     height: 100%;
-    background: #0ea5e9;
+    background: var(--info);
     border-radius: 4px;
 }
 
@@ -282,13 +282,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px;
-    background: #f8fafc;
+    background: var(--surface-sunken);
     border-radius: 8px;
     font-size: 14px;
 }
 
-.low-stock { color: #f59e0b; }
-.out-of-stock { color: #ef4444; }
+.low-stock { color: var(--warning); }
+.out-of-stock { color: var(--danger); }
 
 .inventory-card {
     grid-column: span 2;

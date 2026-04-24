@@ -1,24 +1,25 @@
 /* Admin Orders Redesign Styles */
 
 :root {
-  --primary-navy: #0A1628;
-  --primary-cyan: #00B4D8;
-  
-  /* Status Colors from Spec */
-  --status-pending-bg: #FEF3C7;
+  /* Aliases to canonical token vars */
+  --primary-navy: var(--navy-900);
+  --primary-cyan: var(--accent);
+
+  /* Status color pairs — backgrounds from design spec */
+  --status-pending-bg:   #FEF3C7;
   --status-pending-text: #92400E;
-  
-  --status-confirmed-bg: #DBEAFE;
+
+  --status-confirmed-bg:   #DBEAFE;
   --status-confirmed-text: #1E40AF;
-  
-  --status-out-bg: #FED7AA;
+
+  --status-out-bg:   #FED7AA;
   --status-out-text: #C2410C;
-  
-  --status-delivered-bg: #D1FAE5;
+
+  --status-delivered-bg:   var(--success-bg);
   --status-delivered-text: #065F46;
-  
-  --status-cancelled-bg: #F3F4F6;
-  --status-cancelled-text: #6B7280;
+
+  --status-cancelled-bg:   var(--surface-sunken);
+  --status-cancelled-text: var(--ink-500);
 }
 
 /* ─── Order List Layout ──────────────────────────────────────────────── */
@@ -292,11 +293,11 @@
 
 /* Order Card - 4 Row Layout */
 .order-card-redesign {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
 }
@@ -307,7 +308,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--line-100);
 }
 
 .order-id-label {
@@ -318,7 +319,7 @@
 
 .order-date-label {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--ink-500);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -327,8 +328,8 @@
 /* Row 2: Customer Info */
 .card-customer-row {
   padding: 1rem;
-  background-color: #ffffff;
-  border-bottom: 1px solid #f1f5f9;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--line-100);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -339,14 +340,14 @@
   align-items: center;
   gap: 8px;
   font-size: 0.95rem;
-  color: #334155;
+  color: var(--ink-700);
 }
 
 /* Row 3: Items & Finance Summary */
 .card-summary-row {
   padding: 1rem;
-  background-color: #f8fafc;
-  border-bottom: 1px solid #f1f5f9;
+  background-color: var(--surface-sunken);
+  border-bottom: 1px solid var(--line-100);
 }
 
 .summary-grid {
@@ -363,7 +364,7 @@
 
 .summary-label {
   font-size: 0.75rem;
-  color: #64748b;
+  color: var(--ink-500);
   text-transform: uppercase;
   letter-spacing: 0.025em;
 }
@@ -400,7 +401,7 @@
 
 .timestamp-label {
   font-size: 0.75rem;
-  color: #94a3b8;
+  color: var(--ink-300);
 }
 
 /* Status Badges */
@@ -425,7 +426,7 @@
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border);
 }
 
 .back-link {
@@ -434,7 +435,7 @@
   gap: 8px;
   background: none;
   border: none;
-  color: #64748b;
+  color: var(--ink-500);
   font-weight: 600;
   cursor: pointer;
   transition: color 0.2s;
@@ -463,17 +464,17 @@
 }
 
 .detail-card {
-  background: #fff;
+  background: var(--surface);
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
   margin-bottom: 2rem;
   overflow: hidden;
 }
 
 .detail-card-header {
   padding: 1.25rem;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--surface-sunken);
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -498,17 +499,17 @@
 .admin-products-table th {
   text-align: left;
   padding: 1rem;
-  background: #f8fafc;
-  border-bottom: 2px solid #e2e8f0;
-  color: #64748b;
+  background: var(--surface-sunken);
+  border-bottom: 2px solid var(--border);
+  color: var(--ink-500);
   font-size: 0.85rem;
   text-transform: uppercase;
 }
 
 .admin-products-table td {
   padding: 1rem;
-  border-bottom: 1px solid #f1f5f9;
-  color: #334155;
+  border-bottom: 1px solid var(--line-100);
+  color: var(--ink-700);
 }
 
 /* Action Section */
@@ -578,21 +579,21 @@
   
   .admin-products-table tr {
     display: block;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid var(--border);
     padding: 1rem 0;
   }
-  
+
   .admin-products-table td {
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 1rem;
     border: none;
   }
-  
+
   .admin-products-table td::before {
     content: attr(data-label);
     font-weight: 700;
-    color: #64748b;
+    color: var(--ink-500);
   }
 }
 
@@ -605,12 +606,12 @@
 .action-input-group label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--ink-500);
 }
 
 .admin-input-field {
   padding: 0.75rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--line-200);
   border-radius: 8px;
   outline: none;
   transition: border-color 0.2s;
@@ -661,7 +662,7 @@
   left: 3rem;
   right: 3rem;
   height: 2px;
-  background: #e2e8f0;
+  background: var(--border);
   z-index: 1;
 }
 
@@ -678,8 +679,8 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #fff;
-  border: 2px solid #e2e8f0;
+  background: var(--surface);
+  border: 2px solid var(--border);
   transition: all 0.3s;
 }
 
@@ -691,7 +692,7 @@
 
 .step-label {
   font-size: 0.7rem;
-  color: #64748b;
+  color: var(--ink-500);
   font-weight: 500;
   text-align: center;
   white-space: nowrap;

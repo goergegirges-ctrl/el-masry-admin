@@ -265,7 +265,7 @@
 }
 
 .gauge-fill.prev {
-    background: #94a3b8;
+    background: var(--ink-300);
 }
 
 .gauge-fill.current {

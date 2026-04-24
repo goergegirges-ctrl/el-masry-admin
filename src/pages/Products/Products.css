@@ -1,7 +1,7 @@
 .list-table {
     background-color: var(--surface);
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-md);
     overflow: hidden;
     border: 1px solid var(--border);
     animation: fade-up 0.4s var(--ease-out) 0.08s both;
@@ -59,23 +59,23 @@
 }
 
 .active {
-    background-color: #d1fae5;
-    color: #059669;
+    background-color: var(--success-bg);
+    color: var(--success);
 }
 
 .inactive {
-    background-color: #fee2e2;
-    color: #dc2626;
+    background-color: var(--danger-bg);
+    color: var(--danger);
 }
 
 .featured {
-    background-color: #fef3c7;
-    color: #d97706;
+    background-color: var(--warning-bg);
+    color: var(--warning);
 }
 
 .not-featured {
-    background-color: #f3f4f6;
-    color: #6b7280;
+    background-color: var(--surface-sunken);
+    color: var(--ink-500);
 }
 
 .list-actions {
@@ -163,10 +163,10 @@
 }
 
 .category-tab.active {
-    background: #00B4D8;
+    background: var(--accent);
     color: #fff;
-    border-color: #00B4D8;
-    box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+    border-color: var(--accent);
+    box-shadow: var(--shadow-cyan);
 }
 
 /* Search Bar */
