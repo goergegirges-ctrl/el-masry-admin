@@ -45,7 +45,7 @@ const CustomerDetails = ({ url, token }) => {
     if (loading) return <div className="loading-spinner">Loading...</div>;
     if (!customerData) return <div className="error-state">Customer not found</div>;
 
-    const { customer, orders, stats } = customerData;
+    const { customer, orders, stats, wishlistProducts = [] } = customerData;
 
     return (
         <div className="customer-details-page">
@@ -122,7 +122,7 @@ const CustomerDetails = ({ url, token }) => {
                                             <td>#{order.id.slice(-6).toUpperCase()}</td>
                                             <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                                             <td>
-                                                {order.items.map(i => `${i.name} (${i.quantity})`).join(', ')}
+                                                {(order.items || []).map(i => `${i.name} (${i.quantity})`).join(', ') || '—'}
                                             </td>
                                             <td>{order.subtotal.toLocaleString()} EGP</td>
                                             <td><span className={`status-badge ${order.status.toLowerCase()}`}>{order.status}</span></td>
@@ -140,13 +140,13 @@ const CustomerDetails = ({ url, token }) => {
                 <div className="details-card full-width">
                     <h2><Heart size={20} /> Wishlist Products</h2>
                     <div className="wishlist-grid">
-                        {customer.wishlist?.length > 0 ? (
-                            customer.wishlist.map(product => (
+                        {wishlistProducts.length > 0 ? (
+                            wishlistProducts.map(product => (
                                 <div key={product.id} className="wishlist-item">
-                                    <img src={product.images[0]} alt={product.name} />
+                                    <img src={product.images?.[0]} alt={product.name} />
                                     <div className="wishlist-info">
                                         <h4>{product.name}</h4>
-                                        <p>{product.price.toLocaleString()} EGP</p>
+                                        <p>{(product.price || 0).toLocaleString()} EGP</p>
                                         <span className={`stock-status ${product.stock > 0 ? 'in-stock' : 'out-of-stock'}`}>
                                             {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                                         </span>
