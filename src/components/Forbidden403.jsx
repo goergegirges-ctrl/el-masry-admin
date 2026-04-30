@@ -20,7 +20,7 @@ const Forbidden403 = () => {
             Log in as admin
           </button>
           <button 
-            onClick={() => window.location.href = 'http://localhost:5173'} // Redirect to frontend root
+            onClick={() => window.location.href = import.meta.env.VITE_STORE_URL || 'http://localhost:5173'}
             className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
           >
             Back to Home

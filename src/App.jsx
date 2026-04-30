@@ -36,7 +36,7 @@ const ProtectedRoute = ({ token, user }) => {
 }
 
 const App = () => {
-  const url = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000'
+  const url = import.meta.env.VITE_API_URL || 'http://localhost:4000'
   const [token, setToken] = useState(localStorage.getItem("admin_token") || "")
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("admin_user")) || null)
 
