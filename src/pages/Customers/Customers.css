@@ -5,6 +5,10 @@
 }
 
 .customers-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
     margin-bottom: 30px;
 }
 
@@ -16,8 +20,53 @@
 .customers-list {
     background: var(--surface);
     border-radius: 12px;
-    padding: 20px;
     border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.customers-list table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.customers-list thead tr {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+}
+
+.customers-list th {
+    padding: 11px 14px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.customers-list td {
+    padding: 12px 14px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.customers-list tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.customers-list tbody tr:nth-child(even) {
+    background: var(--bg);
+}
+
+.customers-list tbody tr:hover {
+    background: rgba(0, 180, 216, 0.06);
 }
 
 .cust-cell {
@@ -59,8 +108,8 @@
 }
 
 .badge-orders {
-    background: rgba(22, 163, 74, 0.1);
-    color: #16a34a;
+    background: var(--success-bg);
+    color: var(--success);
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 13px;

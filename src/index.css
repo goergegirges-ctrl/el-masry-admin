@@ -19,10 +19,12 @@
   --bg: #F4F6F8;
   --surface: #FFFFFF;
   --border: #E2E8F0;
+  --bg-input: #FFFFFF;
 
   /* Typography */
   --text: #1A1A2E;
   --text-light: #6B7280;
+  --text-secondary: #6B7280;
   --font-main: 'Inter', sans-serif;
   --font-arabic: 'Cairo', sans-serif;
 }
@@ -54,13 +56,45 @@
 
 /* ─── Dark mode token overrides — applied via html.dark class ─────────── */
 html.dark {
+  /* Core surfaces */
   --bg: #0A1628;
   --surface: #0F2341;
   --border: #1B3560;
+  --bg-input: #0F2341;
+
+  /* Typography */
   --text: #DDE8F5;
   --text-light: #6B89A8;
+  --text-secondary: #6B89A8;
+
+  /* Brand */
+  --primary: #5AA8D4;
+  --primary-light: #6BBDE8;
   --secondary: #1E9BB0;
   --secondary-light: #23BEDB;
+
+  /* Ink scale — inverted for readability on dark */
+  --ink-900: #EAF2FC;
+  --ink-700: #CCDAEA;
+  --ink-500: #8BADC8;
+  --ink-400: #5C82A4;
+  --ink-300: #3A6890;  /* gauge/bar fill — visible against --border #1B3560 */
+
+  /* Native date pickers, scrollbars etc. use dark chrome */
+  color-scheme: dark;
+
+  /* Line/border scale */
+  --line-200: #1E3A5F;
+  --line-100: #152D50;
+
+  /* Surface tints */
+  --surface-sunken: #0C1C38;
+
+  /* Status backgrounds — semi-transparent tints for dark mode */
+  --success-bg: rgba(22, 163, 74, 0.15);
+  --danger-bg:  rgba(220, 38, 38, 0.15);
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --info-bg:    rgba(46, 134, 171, 0.15);
 }
 
 * {

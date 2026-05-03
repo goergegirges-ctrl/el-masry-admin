@@ -4,6 +4,7 @@ import api from '../../utility/api'
 import { toast } from 'react-toastify'
 import { User, Mail, Phone, MapPin, ShoppingBag, CreditCard, Heart, Eye } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import ExportButton from '../../components/ExportButton/ExportButton'
 
 const Customers = ({ url, token, setToken }) => {
     const [customers, setCustomers] = useState([]);
@@ -32,8 +33,25 @@ const Customers = ({ url, token, setToken }) => {
     return (
         <div className='customers-page'>
             <div className="customers-header">
-                <h1>Customers</h1>
-                <p>Order history and purchase data by customer.</p>
+                <div>
+                    <h1>Customers</h1>
+                    <p>Order history and purchase data by customer.</p>
+                </div>
+                <ExportButton
+                    data={customers.map(c => ({
+                        ID: c.id,
+                        'First Name': c.firstName || '',
+                        'Last Name': c.lastName || '',
+                        Email: c.email || '',
+                        Phone: c.phone || '',
+                        'Total Orders': c.totalOrders || 0,
+                        'Total Spent (EGP)': c.totalSpent || 0,
+                        'Last Order Date': c.lastOrderDate ? new Date(c.lastOrderDate).toLocaleDateString('en-GB') : '',
+                        'Joined': c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-GB') : '',
+                    }))}
+                    filename="customers-export"
+                    sheetName="Customers"
+                />
             </div>
 
             <div className="customers-list">

@@ -1,3 +1,12 @@
+/* Outer container */
+.list.add.flex-col {
+    display: flex;
+    flex-direction: column;
+    padding: 28px 32px;
+    width: 100%;
+    animation: fade-up 0.4s var(--ease-out) both;
+}
+
 .list-table {
     background-color: var(--surface);
     border-radius: 12px;
@@ -9,7 +18,7 @@
 
 .list-table-format {
     display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr 0.5fr 0.8fr 0.8fr 1fr;
+    grid-template-columns: 28px 0.5fr 2fr 1fr 1fr 0.5fr 0.5fr 0.8fr 0.8fr 1fr;
     align-items: center;
     gap: 15px;
     padding: 15px 20px;
@@ -74,8 +83,8 @@
 }
 
 .not-featured {
-    background-color: var(--surface-sunken);
-    color: var(--ink-500);
+    background-color: var(--border);
+    color: var(--text-light);
 }
 
 .list-actions {
@@ -169,10 +178,163 @@
     box-shadow: var(--shadow-cyan);
 }
 
-/* Search Bar */
+/* ── Header row ─────────────────────────────────────────────── */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.page-count {
+    color: var(--text-light);
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 6px;
+}
+
+.empty-products-msg {
+    text-align: center;
+    color: var(--text-light);
+    padding: 24px;
+    font-size: 14px;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────── */
+.products-toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.products-controls {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.products-filter-select {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: var(--font-main);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.products-filter-select:focus {
+    border-color: var(--accent);
+}
+
+/* ── Sortable column headers ─────────────────────────────────── */
+.sortable-col {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s;
+}
+
+.sortable-col:hover {
+    color: var(--accent);
+}
+
+.sort-icon {
+    opacity: 0.4;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+}
+
+.sort-icon--active {
+    opacity: 1;
+    color: var(--accent);
+}
+
+/* ── Inline edit ─────────────────────────────────────────────── */
+.editable-cell {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    transition: background 0.12s;
+}
+
+.editable-cell:hover {
+    background: rgba(0, 180, 216, 0.08);
+    color: var(--accent);
+}
+
+.inline-edit-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.inline-edit-input {
+    width: 80px;
+    padding: 4px 6px;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: var(--font-main);
+    background: var(--bg-input);
+    color: var(--text);
+    outline: none;
+}
+
+.inline-edit-ok,
+.inline-edit-cancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0;
+    flex-shrink: 0;
+}
+
+.inline-edit-ok {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.inline-edit-ok:hover {
+    background: var(--success);
+    color: #fff;
+}
+
+.inline-edit-cancel {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.inline-edit-cancel:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+/* ── Search Bar ──────────────────────────────────────────────── */
 .products-search-wrap {
     position: relative;
-    margin-bottom: 16px;
+    flex: 1;
+    min-width: 200px;
 }
 
 .products-search-icon {
@@ -187,11 +349,11 @@
 
 .products-search-input {
     width: 100%;
-    padding: 10px 40px 10px 36px;
+    padding: 9px 40px 9px 36px;
     border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 14px;
-    background: var(--surface);
+    background: var(--bg-input);
     color: var(--text);
     font-family: var(--font-main);
     outline: none;
@@ -225,4 +387,106 @@
 
 .category-tab.active .count {
     opacity: 1;
+}
+
+/* ── Alternating rows ─────────────────────────────────────────── */
+.list-table > .list-table-format:not(.title):nth-child(even) {
+    background: var(--bg);
+}
+
+/* ── Row checkbox ─────────────────────────────────────────────── */
+.row-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--accent);
+}
+
+/* ── Bulk action bar ──────────────────────────────────────────── */
+.bulk-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    flex-wrap: wrap;
+}
+
+.bulk-selected-count {
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    min-width: 100px;
+}
+
+.bulk-selected-count span {
+    color: var(--accent);
+}
+
+.bulk-stock-label {
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.bulk-stock-input {
+    width: 80px;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: var(--font-main);
+    background: var(--bg-input);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.bulk-stock-input:focus {
+    border-color: var(--accent);
+}
+
+.bulk-apply-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.12s var(--ease-out);
+    white-space: nowrap;
+}
+
+.bulk-apply-btn:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.bulk-apply-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.bulk-clear-btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-light);
+    font-size: 13px;
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.bulk-clear-btn:hover {
+    border-color: var(--danger);
+    color: var(--danger);
 }

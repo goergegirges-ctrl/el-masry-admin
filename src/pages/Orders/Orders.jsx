@@ -2,8 +2,9 @@ import React, { useEffect, useState, useMemo } from 'react'
 import '../../css/AdminOrders.css'
 import api from '../../utility/api';
 import { toast } from 'react-toastify'
-import { Search, X } from 'lucide-react'
+import { Search, X, DollarSign } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import ExportButton from '../../components/ExportButton/ExportButton'
 
 const STATUS_OPTS = [
     { value: 'all',              label: 'All Statuses' },
@@ -17,47 +18,51 @@ const STATUS_OPTS = [
 const statusSlug = (s) => s.toLowerCase().replace(/\s+/g, '-')
 
 const Orders = ({ url, token, setToken }) => {
-    const [orders, setOrders]           = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [statusFilter, setStatusFilter] = useState('all');
-    const navigate = useNavigate();
+    const [orders, setOrders]           = useState([])
+    const [searchQuery, setSearchQuery] = useState('')
+    const [statusFilter, setStatusFilter] = useState('all')
+    const [dateFrom, setDateFrom] = useState('')
+    const [dateTo, setDateTo]     = useState('')
+    const navigate = useNavigate()
 
     const fetchAllOrders = async () => {
         try {
-            const response = await api.get(`/api/order/list`);
+            const response = await api.get('/api/order/list')
             if (response.data.success) {
-                setOrders(response.data.data.reverse());
+                setOrders(response.data.data.reverse())
             } else {
-                toast.error(response.data.message || "Error fetching orders");
+                toast.error(response.data.message || 'Error fetching orders')
             }
         } catch (error) {
-            console.error("Orders fetch error:", error);
             if (error.response?.status === 401) {
-                setToken("");
-                localStorage.removeItem("admin_token");
+                setToken('')
+                localStorage.removeItem('admin_token')
             }
-            toast.error("Error fetching orders");
+            toast.error('Error fetching orders')
         }
     }
 
     const statusHandler = async (event, orderId) => {
         try {
-            const response = await api.put(`/api/order/update`, { id: orderId, status: event.target.value });
+            const response = await api.put('/api/order/update', { id: orderId, status: event.target.value })
             if (response.data.success) {
-                toast.success("Status updated");
-                await fetchAllOrders();
+                toast.success('Status updated')
+                await fetchAllOrders()
             }
-        } catch (error) {
-            toast.error("Error updating status");
+        } catch {
+            toast.error('Error updating status')
         }
     }
 
     useEffect(() => {
-        if (token) fetchAllOrders();
+        if (token) fetchAllOrders()
     }, [token])
 
     const filteredOrders = useMemo(() => {
-        const q = searchQuery.trim().toLowerCase();
+        const q = searchQuery.trim().toLowerCase()
+        const from = dateFrom ? new Date(dateFrom) : null
+        const to   = dateTo   ? new Date(dateTo + 'T23:59:59') : null
+
         return orders.filter(order => {
             const matchesSearch = !q || [
                 order.id,
@@ -65,24 +70,60 @@ const Orders = ({ url, token, setToken }) => {
                 order.customer?.lastName,
                 order.customer?.phone,
                 order.customer?.city,
-            ].some(v => v?.toString().toLowerCase().includes(q));
+            ].some(v => v?.toString().toLowerCase().includes(q))
 
             const matchesStatus = statusFilter === 'all'
-                || order.status.toLowerCase() === statusFilter;
+                || order.status.toLowerCase() === statusFilter
 
-            return matchesSearch && matchesStatus;
-        });
-    }, [orders, searchQuery, statusFilter]);
+            const orderDate = order.createdAt ? new Date(order.createdAt) : null
+            const matchesFrom = !from || !orderDate || orderDate >= from
+            const matchesTo   = !to   || !orderDate || orderDate <= to
+
+            return matchesSearch && matchesStatus && matchesFrom && matchesTo
+        })
+    }, [orders, searchQuery, statusFilter, dateFrom, dateTo])
+
+    const totalRevenue = useMemo(
+        () => filteredOrders.reduce((sum, o) => sum + (o.subtotal || 0) + (o.deliveryFee || 0), 0),
+        [filteredOrders]
+    )
+
+    const clearDateRange = () => { setDateFrom(''); setDateTo('') }
 
     return (
-        <div className='admin-order-container'>
+        <div className="admin-order-container">
             <div className="order-page-header">
                 <div>
                     <h2>Orders</h2>
                     <span className="order-total-count">{filteredOrders.length} of {orders.length}</span>
                 </div>
+                <ExportButton
+                    data={filteredOrders.map(o => ({
+                        'Order ID':         o.id.slice(-8).toUpperCase(),
+                        Date:               new Date(o.createdAt).toLocaleDateString('en-GB'),
+                        Customer:           `${o.customer?.firstName || ''} ${o.customer?.lastName || ''}`.trim(),
+                        Phone:              o.customer?.phone || '',
+                        City:               o.customer?.city || '',
+                        Items:              o.items?.length || 0,
+                        'Subtotal (EGP)':   o.subtotal,
+                        'Delivery Fee (EGP)': o.deliveryFee || 0,
+                        'Total (EGP)':      (o.subtotal || 0) + (o.deliveryFee || 0),
+                        Status:             o.status,
+                        'Payment Method':   o.paymentMethod || '',
+                    }))}
+                    filename="orders-export"
+                    sheetName="Orders"
+                />
             </div>
 
+            {/* Revenue summary */}
+            <div className="order-revenue-bar">
+                <DollarSign size={16} className="order-revenue-icon" />
+                <span className="order-revenue-label">Total Revenue (filtered):</span>
+                <span className="order-revenue-value">{totalRevenue.toLocaleString()} EGP</span>
+            </div>
+
+            {/* Filters */}
             <div className="order-filters">
                 <div className="order-search-wrap">
                     <Search size={16} className="order-search-icon" />
@@ -99,6 +140,7 @@ const Orders = ({ url, token, setToken }) => {
                         </button>
                     )}
                 </div>
+
                 <select
                     className="order-status-filter-select"
                     value={statusFilter}
@@ -108,8 +150,32 @@ const Orders = ({ url, token, setToken }) => {
                         <option key={o.value} value={o.value}>{o.label}</option>
                     ))}
                 </select>
+
+                <div className="order-date-range">
+                    <input
+                        type="date"
+                        className="order-date-input"
+                        value={dateFrom}
+                        onChange={e => setDateFrom(e.target.value)}
+                        title="From date"
+                    />
+                    <span className="order-date-sep">–</span>
+                    <input
+                        type="date"
+                        className="order-date-input"
+                        value={dateTo}
+                        onChange={e => setDateTo(e.target.value)}
+                        title="To date"
+                    />
+                    {(dateFrom || dateTo) && (
+                        <button className="order-date-clear" onClick={clearDateRange} title="Clear date range">
+                            <X size={13} />
+                        </button>
+                    )}
+                </div>
             </div>
 
+            {/* Table */}
             <div className="order-table-wrapper">
                 <table className="order-table">
                     <thead>

@@ -22,6 +22,26 @@
   --status-cancelled-text: var(--ink-500);
 }
 
+html.dark {
+  /* primary-navy is navy-900 (#0A1628) — use text token in dark mode */
+  --primary-navy: var(--text);
+
+  --status-pending-bg:   rgba(245, 158, 11, 0.14);
+  --status-pending-text: #FBBF24;
+
+  --status-confirmed-bg:   rgba(46, 134, 171, 0.18);
+  --status-confirmed-text: #60B4D8;
+
+  --status-out-bg:   rgba(194, 65, 12, 0.14);
+  --status-out-text: #FB923C;
+
+  --status-delivered-bg:   rgba(22, 163, 74, 0.15);
+  --status-delivered-text: #4ADE80;
+
+  --status-cancelled-bg:   rgba(80, 80, 100, 0.15);
+  --status-cancelled-text: #9CA3AF;
+}
+
 /* ─── Order List Layout ──────────────────────────────────────────────── */
 
 .admin-order-container {
@@ -32,7 +52,8 @@
 /* Page header */
 .order-page-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
   margin-bottom: 20px;
   padding-bottom: 16px;
@@ -54,12 +75,42 @@
   font-weight: 500;
 }
 
+/* Revenue summary bar */
+.order-revenue-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.order-revenue-icon {
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.order-revenue-label {
+  color: var(--text-light);
+}
+
+.order-revenue-value {
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  margin-left: 2px;
+}
+
 /* Filter bar */
 .order-filters {
   display: flex;
   gap: 12px;
   margin-bottom: 16px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .order-search-wrap {
@@ -124,6 +175,67 @@
   border-color: var(--accent);
 }
 
+/* Date range */
+.order-date-range {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.order-date-input {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font-main);
+  background: var(--bg-input);
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  /* Override browser date picker default on dark mode */
+  color-scheme: inherit;
+}
+
+.order-date-input:focus {
+  border-color: var(--accent);
+}
+
+.order-date-sep {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.order-date-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: var(--danger-bg);
+  color: var(--danger);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.order-date-clear:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .order-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .order-date-range {
+    flex-wrap: wrap;
+  }
+}
+
 /* Table */
 .order-table-wrapper {
   background: var(--surface);
@@ -164,8 +276,12 @@
   border-bottom: none;
 }
 
-.order-table tbody tr.order-row:hover {
+.order-table tbody tr.order-row:nth-child(even) {
   background: var(--bg);
+}
+
+.order-table tbody tr.order-row:hover {
+  background: rgba(0, 180, 216, 0.06);
 }
 
 .order-table td {

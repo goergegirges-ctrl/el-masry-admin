@@ -1,11 +1,14 @@
 import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useChartColors } from '../../hooks/useChartColors';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658'];
+const SLICE_COLORS = ['#00B4D8', '#2E86AB', '#16A34A', '#F59E0B', '#DC2626', '#8B5CF6', '#F43F5E'];
 
 const CategorySalesChart = ({ data }) => {
+    const chartColors = useChartColors();
+
     return (
-        <div style={{ width: '100%', height: 300 }}>
+        <div style={{ width: '100%', height: 260 }}>
             <ResponsiveContainer>
                 <PieChart>
                     <Pie
@@ -14,16 +17,28 @@ const CategorySalesChart = ({ data }) => {
                         cy="50%"
                         labelLine={false}
                         outerRadius={80}
-                        fill="#8884d8"
                         dataKey="value"
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                     >
                         {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            <Cell key={`cell-${index}`} fill={SLICE_COLORS[index % SLICE_COLORS.length]} />
                         ))}
                     </Pie>
-                    <Tooltip formatter={(value) => `${value.toLocaleString()} EGP`} />
-                    <Legend />
+                    <Tooltip
+                        contentStyle={{
+                            background: chartColors.surface,
+                            border: `1px solid ${chartColors.border}`,
+                            borderRadius: 8,
+                            fontSize: 12,
+                            color: chartColors.text,
+                        }}
+                        formatter={(value) => [`${value.toLocaleString()} EGP`, 'Revenue']}
+                    />
+                    <Legend
+                        formatter={(value) => (
+                            <span style={{ color: chartColors.textLight, fontSize: 11 }}>{value}</span>
+                        )}
+                    />
                 </PieChart>
             </ResponsiveContainer>
         </div>
