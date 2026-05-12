@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './Navbar.css'
 import { Moon, Sun } from 'lucide-react'
+import NotificationPanel from '../NotificationPanel/NotificationPanel'
 
 const LogoMark = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="El-Masry Electronics" className="navbar-logomark">
@@ -54,8 +55,11 @@ const Navbar = () => {
 
   return (
     <div className='navbar'>
-      <h1 className="navbar-logo">El-Masry <span className="admin-text">Admin</span></h1>
+      <h1 className="navbar-logo">
+        El-Masry <span className="admin-text">Admin</span>
+      </h1>
       <div className='navbar-right'>
+        <NotificationPanel />
         <button
           className="dark-toggle"
           onClick={() => setIsDark(d => !d)}

@@ -2,21 +2,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px 15px 280px;
-  /* 250px sidebar + 30px gap */
+  padding: 12px 24px 12px 280px; /* 250px sidebar + 30px gap */
   background-color: var(--surface);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 99;
+  gap: 12px;
+  min-height: 60px;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar-logo {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--primary);
   margin: 0;
+  white-space: nowrap;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .admin-text {
@@ -27,12 +33,13 @@
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .navbar-logomark {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   flex-shrink: 0;
 }
 
@@ -63,9 +70,36 @@
   transform: rotate(30deg) scale(0.85);
 }
 
+/* ── Tablet — sidebar collapsed to 70px ── */
 @media (max-width: 900px) {
   .navbar {
-    padding-left: 100px;
-    /* Adjust for collapsed sidebar */
+    padding-left: 88px; /* 70px sidebar + 18px gap */
+  }
+
+  .navbar-logo {
+    font-size: 17px;
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .navbar {
+    padding-left: 80px; /* 64px sidebar + 16px gap */
+    padding-right: 16px;
+  }
+
+  .navbar-logo {
+    font-size: 16px;
+  }
+
+  /* Hide the logomark on very small screens to free up space */
+  .navbar-logomark {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar-logo {
+    font-size: 14px;
   }
 }

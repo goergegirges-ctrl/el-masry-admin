@@ -1,9 +1,9 @@
 /* Sidebar keeps a dark navy background in both light and dark mode */
-:root { --sidebar-bg: #0B3C5D; }
+:root { --sidebar-bg: #0B3C5D; --sidebar-w: 250px; --sidebar-w-collapsed: 64px; }
 html.dark { --sidebar-bg: #081526; }
 
 .sidebar {
-    width: 250px;
+    width: var(--sidebar-w);
     min-height: 100vh;
     background-color: var(--sidebar-bg);
     color: rgba(255, 255, 255, 0.9);
@@ -15,41 +15,44 @@ html.dark { --sidebar-bg: #081526; }
     left: 0;
     top: 0;
     z-index: 100;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: width var(--t-base) var(--ease-out),
+                background-color 0.3s ease,
+                border-color 0.3s ease;
+    overflow: hidden;
 }
 
 .sidebar-options {
-    padding-top: 20px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding: 20px 15px;
+    gap: 4px;
+    padding: 16px 10px;
 }
 
 .sidebar-option {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 15px;
-    border-radius: 8px;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     color: rgba(255, 255, 255, 0.65);
     text-decoration: none;
-    transition: background 0.18s var(--ease-out),
-                color 0.18s,
-                transform 0.15s var(--ease-out);
-    font-size: 15px;
+    transition: background var(--t-fast) var(--ease-out),
+                color var(--t-fast),
+                transform var(--t-fast) var(--ease-out);
+    font-size: 14px;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .sidebar-option:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
-    transform: translateX(3px);
+    transform: translateX(2px);
 }
 
 .sidebar-option.active {
-    background: rgba(0, 180, 216, 0.14);
+    background: rgba(0, 180, 216, 0.16);
     color: var(--accent);
 }
 
@@ -58,8 +61,12 @@ html.dark { --sidebar-bg: #081526; }
     color: var(--accent);
 }
 
+.sidebar-option svg {
+    flex-shrink: 0;
+}
+
 .sidebar-footer {
-    padding: 20px;
+    padding: 12px 10px 16px;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -72,11 +79,13 @@ html.dark { --sidebar-bg: #081526; }
     border: none;
     color: var(--danger);
     cursor: pointer;
-    padding: 12px 15px;
-    border-radius: 8px;
-    transition: background 0.18s var(--ease-out), transform 0.15s var(--ease-out);
-    font-size: 15px;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    transition: background var(--t-fast) var(--ease-out),
+                transform var(--t-fast) var(--ease-out);
+    font-size: 14px;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .sidebar-logout-btn:active {
@@ -87,6 +96,7 @@ html.dark { --sidebar-bg: #081526; }
     background-color: var(--danger-bg);
 }
 
+/* ── Tablet: icon-only strip ── */
 @media (max-width: 900px) {
     .sidebar {
         width: 70px;
@@ -101,9 +111,34 @@ html.dark { --sidebar-bg: #081526; }
     .sidebar-logout-btn {
         justify-content: center;
         padding: 12px;
+        gap: 0;
+    }
+}
+
+/* ── Mobile: narrower icon-only strip ── */
+@media (max-width: 768px) {
+    .sidebar {
+        width: var(--sidebar-w-collapsed); /* 64px */
     }
 
-    .sidebar .logo p {
+    .sidebar-option p,
+    .sidebar-logout-btn p {
         display: none;
+    }
+
+    .sidebar-options {
+        padding: 12px 8px;
+        gap: 2px;
+    }
+
+    .sidebar-option,
+    .sidebar-logout-btn {
+        justify-content: center;
+        padding: 10px;
+        gap: 0;
+    }
+
+    .sidebar-footer {
+        padding: 8px 8px 12px;
     }
 }

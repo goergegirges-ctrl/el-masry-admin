@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
+import { NotificationProvider } from './context/NotificationContext'
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import AddProduct from './pages/AddProduct/AddProduct'
 import Products from './pages/Products/Products'
@@ -68,7 +69,11 @@ const App = () => {
         <Route path="/403" element={<Forbidden403 />} />
         
         <Route element={<ProtectedRoute token={token} user={user} />}>
-          <Route element={<Layout setToken={setToken} url={url} token={token} />}>
+          <Route element={
+            <NotificationProvider token={token}>
+              <Layout setToken={setToken} url={url} token={token} />
+            </NotificationProvider>
+          }>
             <Route path="/" element={<Dashboard url={url} token={token} setToken={setToken} />} />
             <Route path="/products" element={<Products url={url} token={token} setToken={setToken} />} />
             <Route path="/products/add" element={<AddProduct url={url} token={token} setToken={setToken} />} />
