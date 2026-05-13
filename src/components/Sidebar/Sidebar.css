@@ -1,5 +1,5 @@
 /* Sidebar keeps a dark navy background in both light and dark mode */
-:root { --sidebar-bg: #0B3C5D; --sidebar-w: 250px; --sidebar-w-collapsed: 64px; }
+:root { --sidebar-bg: #0B3C5D; --sidebar-w: 250px; --sidebar-w-collapsed: 64px; --bottomnav-h: 60px; }
 html.dark { --sidebar-bg: #081526; }
 
 .sidebar {
@@ -12,7 +12,7 @@ html.dark { --sidebar-bg: #081526; }
     justify-content: space-between;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
     position: fixed;
-    left: 0;
+    inset-inline-start: 0;
     top: 0;
     z-index: 100;
     transition: width var(--t-base) var(--ease-out),
@@ -140,5 +140,73 @@ html.dark { --sidebar-bg: #081526; }
 
     .sidebar-footer {
         padding: 8px 8px 12px;
+    }
+}
+
+/* ── Small mobile: bottom tab bar ── */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+        min-height: unset;
+        height: var(--bottomnav-h);
+        top: auto;
+        bottom: 0;
+        inset-inline-start: 0;
+        flex-direction: row;
+        align-items: stretch;
+        border-right: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        /* safe-area accounts for iPhone home indicator */
+        padding-bottom: env(safe-area-inset-bottom);
+        overflow: visible;
+        /* skip width transition — layout jump would look wrong */
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .sidebar-options {
+        flex-direction: row;
+        flex: 1;
+        padding: 0;
+        gap: 0;
+        align-items: stretch;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sidebar-options::-webkit-scrollbar { display: none; }
+
+    .sidebar-option {
+        flex: 1;
+        min-width: 44px;
+        min-height: var(--bottomnav-h);
+        justify-content: center;
+        border-radius: 0;
+        padding: 0 4px;
+        transform: none !important; /* disable translateX hover */
+    }
+
+    /* Footer: show logout only, hide the "View Store" link to keep bar compact */
+    .sidebar-footer {
+        display: flex;
+        flex-direction: row;
+        border-top: none;
+        border-inline-start: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 0;
+        align-items: stretch;
+    }
+
+    .sidebar-footer a.sidebar-option {
+        display: none; /* "View Store" hidden on small mobile */
+    }
+
+    .sidebar-logout-btn {
+        min-width: 48px;
+        min-height: var(--bottomnav-h);
+        justify-content: center;
+        border-radius: 0;
+        padding: 0 8px;
+        font-size: 12px;
     }
 }

@@ -47,8 +47,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  /* 44px meets WCAG 2.5.5 touch-target minimum */
+  width: 44px;
+  height: 44px;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: var(--bg);
@@ -101,5 +102,19 @@
 @media (max-width: 420px) {
   .navbar-logo {
     font-size: 14px;
+  }
+}
+
+/* ── Small mobile: sidebar is now at the bottom, reclaim the left padding ── */
+@media (max-width: 480px) {
+  .navbar {
+    padding-inline-start: 16px;
+    padding-inline-end: 12px;
+    /* account for iPhone notch on the top */
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+
+  .navbar-logo {
+    font-size: 15px;
   }
 }

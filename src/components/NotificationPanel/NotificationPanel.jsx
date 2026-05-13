@@ -1,10 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bell, X, CheckCheck, ShoppingBag } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../context/NotificationContext';
 import './NotificationPanel.css';
 
 const TYPE_ICON = {
     new_order: <ShoppingBag size={16} />,
+};
+
+const getRoute = (n) => {
+    if (n.type === 'new_order') {
+        const orderId = n.payload?.order_id;
+        return orderId ? `/orders/${orderId}` : '/orders';
+    }
+    return null;
 };
 
 const fmtTime = (iso) => {
@@ -23,6 +32,7 @@ const NotificationPanel = () => {
     const { notifications, unreadCount, markAllRead } = useNotifications();
     const [open, setOpen] = useState(false);
     const panelRef = useRef(null);
+    const navigate = useNavigate();
 
     // Close on outside click
     useEffect(() => {
@@ -91,22 +101,38 @@ const NotificationPanel = () => {
                                 <p>No notifications yet / لا توجد إشعارات بعد</p>
                             </div>
                         ) : (
-                            notifications.map(n => (
-                                <div
-                                    key={n.id}
-                                    className={`notif-item${n.is_read ? '' : ' unread'}`}
-                                >
-                                    <span className="notif-icon">
-                                        {TYPE_ICON[n.type] ?? <Bell size={16} />}
-                                    </span>
-                                    <div className="notif-content">
-                                        <p className="notif-title">{n.title}</p>
-                                        {n.body && <p className="notif-body">{n.body}</p>}
-                                        <p className="notif-time">{fmtTime(n.created_at)}</p>
+                            notifications.map(n => {
+                                const route = getRoute(n);
+                                return (
+                                    <div
+                                        key={n.id}
+                                        className={`notif-item${n.is_read ? '' : ' unread'}${route ? ' clickable' : ''}`}
+                                        role={route ? 'button' : undefined}
+                                        tabIndex={route ? 0 : undefined}
+                                        onClick={() => {
+                                            if (!route) return;
+                                            navigate(route);
+                                            setOpen(false);
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (route && (e.key === 'Enter' || e.key === ' ')) {
+                                                navigate(route);
+                                                setOpen(false);
+                                            }
+                                        }}
+                                    >
+                                        <span className="notif-icon">
+                                            {TYPE_ICON[n.type] ?? <Bell size={16} />}
+                                        </span>
+                                        <div className="notif-content">
+                                            <p className="notif-title">{n.title}</p>
+                                            {n.body && <p className="notif-body">{n.body}</p>}
+                                            <p className="notif-time">{fmtTime(n.created_at)}</p>
+                                        </div>
+                                        {!n.is_read && <span className="notif-dot" aria-hidden="true" />}
                                     </div>
-                                    {!n.is_read && <span className="notif-dot" aria-hidden="true" />}
-                                </div>
-                            ))
+                                );
+                            })
                         )}
                     </div>
                 </div>

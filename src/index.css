@@ -144,6 +144,16 @@ hr {
   }
 }
 
+/* Bottom-nav layout: sidebar moves to bottom, content takes full width */
+@media (max-width: 480px) {
+  .app-content {
+    margin-inline-start: 0;
+    padding: 16px 12px;
+    /* leave room for the bottom tab bar + iPhone home indicator */
+    padding-bottom: calc(var(--bottomnav-h, 60px) + env(safe-area-inset-bottom) + 16px);
+  }
+}
+
 /* Common button styles */
 button {
   cursor: pointer;

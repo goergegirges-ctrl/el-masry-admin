@@ -133,6 +133,10 @@
     background: var(--bg);
 }
 
+.notif-item.clickable {
+    cursor: pointer;
+}
+
 .notif-item.unread {
     background: color-mix(in srgb, var(--accent) 6%, var(--surface));
 }
@@ -163,18 +167,17 @@
     font-weight: 600;
     color: var(--text);
     margin: 0 0 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* allow wrapping on mobile so bilingual titles don't get cut */
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .notif-body {
     font-size: 12px;
     color: var(--text-light);
     margin: 0 0 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .notif-time {
@@ -192,10 +195,23 @@
     margin-top: 4px;
 }
 
-/* ── Mobile — panel fills most of viewport width ── */
+/* ── Mobile: fixed to viewport so the sidebar stacking context doesn't clip it ── */
 @media (max-width: 480px) {
     .notif-panel {
-        width: calc(100vw - 32px);
-        inset-inline-end: -8px;
+        /* Switch from absolute (inside navbar stacking ctx z-index:99) to fixed
+           in the root stacking context so z-index:300 actually beats sidebar (100) */
+        position: fixed;
+        top: 60px; /* below navbar */
+        inset-inline-start: 12px;
+        inset-inline-end: 12px;
+        width: auto;
+        max-height: calc(100dvh - 140px); /* leave room for bottom nav */
+        z-index: 300;
     }
+}
+
+/* Bell button touch target ≥ 44px */
+.notif-bell {
+    min-width: 44px;
+    min-height: 44px;
 }
