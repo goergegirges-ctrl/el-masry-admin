@@ -89,7 +89,7 @@ const OrderDetails = () => {
         <div className="header-meta">
           <h2>Order #{order.id.slice(-8).toUpperCase()}</h2>
           <OrderStatusBadge status={order.status} />
-          {order.status === 'cancelled' && (
+          {order.status?.toLowerCase() === 'cancelled' && (
             <button
               className="order-delete-btn"
               onClick={() => setShowDeleteModal(true)}
