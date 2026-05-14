@@ -10,6 +10,15 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.details-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .back-btn {
@@ -180,6 +189,115 @@
     color: var(--ink-500);
     text-align: center;
     padding: 20px;
+}
+
+/* Banned badge */
+.customer-banned-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--danger-bg);
+    color: var(--danger);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.customer-banned-badge.sm {
+    font-size: 11px;
+    padding: 2px 8px;
+}
+
+/* Action row for ban/delete buttons */
+.customer-action-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.customer-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    min-height: 36px;
+}
+
+.customer-action-btn.ban {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border-color: rgba(220, 38, 38, 0.25);
+}
+
+.customer-action-btn.ban:hover {
+    background: var(--danger);
+    color: #fff;
+    border-color: var(--danger);
+}
+
+.customer-action-btn.unban {
+    background: var(--success-bg);
+    color: var(--success);
+    border-color: rgba(22, 163, 74, 0.25);
+}
+
+.customer-action-btn.unban:hover {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+}
+
+.customer-action-btn.delete {
+    background: var(--surface-sunken);
+    color: var(--danger);
+    border-color: rgba(220, 38, 38, 0.2);
+}
+
+.customer-action-btn.delete:hover {
+    background: var(--danger-bg);
+    border-color: rgba(220, 38, 38, 0.4);
+}
+
+html.dark .customer-action-btn.ban {
+    background: rgba(220, 38, 38, 0.12);
+    color: #f87171;
+    border-color: rgba(220, 38, 38, 0.2);
+}
+
+html.dark .customer-action-btn.ban:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+html.dark .customer-action-btn.unban {
+    background: rgba(22, 163, 74, 0.12);
+    color: #4ade80;
+    border-color: rgba(22, 163, 74, 0.2);
+}
+
+html.dark .customer-action-btn.unban:hover {
+    background: var(--success);
+    color: #fff;
+}
+
+html.dark .customer-action-btn.delete {
+    background: rgba(30, 40, 60, 0.5);
+    color: #f87171;
+    border-color: rgba(220, 38, 38, 0.15);
+}
+
+html.dark .customer-action-btn.delete:hover {
+    background: rgba(220, 38, 38, 0.15);
 }
 
 @media (max-width: 1024px) {

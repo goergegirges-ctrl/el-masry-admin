@@ -818,3 +818,41 @@ html.dark {
   color: var(--primary-navy);
   font-weight: 700;
 }
+
+/* Delete Order button — only visible for cancelled orders */
+.order-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1.5px solid rgba(220, 38, 38, 0.3);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast), transform 0.1s;
+}
+
+.order-delete-btn:hover {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+}
+
+.order-delete-btn:active {
+  transform: scale(0.97);
+}
+
+html.dark .order-delete-btn {
+  background: rgba(220, 38, 38, 0.15);
+  border-color: rgba(220, 38, 38, 0.25);
+  color: #f87171;
+}
+
+html.dark .order-delete-btn:hover {
+  background: var(--danger);
+  color: #fff;
+}

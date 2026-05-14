@@ -2,14 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../utility/api';
 import { toast } from 'react-toastify';
-import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, ShoppingBag, CreditCard, Heart, TrendingUp } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, Calendar, MapPin, ShoppingBag, CreditCard, Heart, TrendingUp, Ban, Trash2, ShieldCheck } from 'lucide-react';
 import './CustomerDetails.css';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 
 const CustomerDetails = ({ url, token }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [customerData, setCustomerData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showBanModal, setShowBanModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [actionLoading, setActionLoading] = useState(false);
 
     const fetchCustomerDetails = async () => {
         try {
@@ -42,18 +46,88 @@ const CustomerDetails = ({ url, token }) => {
         }
     }, [id, token]);
 
+    const handleBan = async () => {
+        setActionLoading(true);
+        try {
+            const isBanned = customerData.customer.banned;
+            const res = await api.patch(`/api/admin/user/${id}/ban`, { banned: !isBanned });
+            if (res.data.success) {
+                toast.success(res.data.message);
+                setCustomerData(prev => ({
+                    ...prev,
+                    customer: { ...prev.customer, banned: res.data.banned }
+                }));
+            } else {
+                toast.error(res.data.message || 'Action failed');
+            }
+        } catch (err) {
+            toast.error(err.response?.data?.message || 'Error updating ban status');
+        } finally {
+            setActionLoading(false);
+            setShowBanModal(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        setActionLoading(true);
+        try {
+            const res = await api.delete(`/api/admin/user/${id}`);
+            if (res.data.success) {
+                toast.success('Customer deleted successfully');
+                navigate('/customers');
+            } else {
+                toast.error(res.data.message || 'Failed to delete customer');
+            }
+        } catch (err) {
+            toast.error(err.response?.data?.message || 'Error deleting customer');
+        } finally {
+            setActionLoading(false);
+            setShowDeleteModal(false);
+        }
+    };
+
     if (loading) return <div className="loading-spinner">Loading...</div>;
     if (!customerData) return <div className="error-state">Customer not found</div>;
 
     const { customer, orders, stats, wishlistProducts = [] } = customerData;
+    const isBanned = !!customer.banned;
+    const canDelete = stats.allOrdersCount === 0;
 
     return (
         <div className="customer-details-page">
+            <ConfirmModal
+                isOpen={showBanModal}
+                title={isBanned ? 'Unban Customer' : 'Ban Customer'}
+                message={isBanned
+                    ? 'هل تريد رفع الحظر عن هذا العميل؟ سيتمكن من تسجيل الدخول مجدداً.'
+                    : 'هل أنت متأكد من حظر هذا العميل؟ لن يتمكن من تسجيل الدخول حتى يتم رفع الحظر.'
+                }
+                confirmLabel={isBanned ? 'رفع الحظر' : 'حظر'}
+                cancelLabel="إلغاء"
+                onConfirm={handleBan}
+                onCancel={() => setShowBanModal(false)}
+                danger={!isBanned}
+                loading={actionLoading}
+            />
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                title="Delete Customer"
+                message="هذا العميل ليس لديه طلبات. هل تريد حذف حسابه نهائياً؟"
+                confirmLabel="حذف"
+                cancelLabel="إلغاء"
+                onConfirm={handleDelete}
+                onCancel={() => setShowDeleteModal(false)}
+                danger
+                loading={actionLoading}
+            />
             <div className="details-header">
                 <button onClick={() => navigate('/customers')} className="back-btn">
                     <ArrowLeft size={20} /> Back to Customers
                 </button>
-                <h1>Customer Profile</h1>
+                <div className="details-header-actions">
+                    <h1>Customer Profile</h1>
+                    {isBanned && <span className="customer-banned-badge">Banned</span>}
+                </div>
             </div>
 
             <div className="details-grid">
@@ -63,6 +137,7 @@ const CustomerDetails = ({ url, token }) => {
                     <div className="info-item">
                         <User size={16} />
                         <span>{customer.firstName} {customer.lastName}</span>
+                        {isBanned && <span className="customer-banned-badge sm">Banned</span>}
                     </div>
                     <div className="info-item">
                         <Mail size={16} />
@@ -79,6 +154,25 @@ const CustomerDetails = ({ url, token }) => {
                     <div className="info-item">
                         <MapPin size={16} />
                         <span>{customer.savedAddresses?.find(a => a.isDefault)?.city || 'N/A'}</span>
+                    </div>
+
+                    <div className="customer-action-row">
+                        <button
+                            className={`customer-action-btn ${isBanned ? 'unban' : 'ban'}`}
+                            onClick={() => setShowBanModal(true)}
+                        >
+                            {isBanned ? <ShieldCheck size={15} /> : <Ban size={15} />}
+                            {isBanned ? 'Unban' : 'Ban'}
+                        </button>
+                        {canDelete && (
+                            <button
+                                className="customer-action-btn delete"
+                                onClick={() => setShowDeleteModal(true)}
+                            >
+                                <Trash2 size={15} />
+                                Delete Account
+                            </button>
+                        )}
                     </div>
                 </div>
 

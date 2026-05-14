@@ -3,24 +3,28 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import '../../css/AdminOrders.css';
 import api from '../../utility/api';
 import { toast } from 'react-toastify';
-import { 
-  ArrowLeft, 
-  User, 
-  Phone, 
-  MapPin, 
-  ShoppingBag, 
+import {
+  ArrowLeft,
+  User,
+  Phone,
+  MapPin,
+  ShoppingBag,
   Calendar,
-  ExternalLink
+  ExternalLink,
+  Trash2
 } from 'lucide-react';
 import OrderTimeline from '../../components/Order/OrderTimeline';
 import OrderStatusBadge from '../../components/Order/OrderStatusBadge';
 import AdminActionPanel from '../../components/Order/AdminActionPanel';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 
 const OrderDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchOrderDetails = async () => {
     setLoading(true);
@@ -44,11 +48,40 @@ const OrderDetails = () => {
     fetchOrderDetails();
   }, [id]);
 
+  const handleDeleteOrder = async () => {
+    setDeleting(true);
+    try {
+      const res = await api.delete(`/api/admin/order/${id}`);
+      if (res.data.success) {
+        toast.success("Order deleted successfully");
+        navigate('/orders');
+      } else {
+        toast.error(res.data.message || "Failed to delete order");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Error deleting order");
+    } finally {
+      setDeleting(false);
+      setShowDeleteModal(false);
+    }
+  };
+
   if (loading) return <div className="admin-order-container">Loading order…</div>;
   if (!order) return <div className="admin-order-container">Order not found — it may have been deleted.</div>;
 
   return (
     <div className="admin-order-container">
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        title="Delete Order"
+        message="هل أنت متأكد من حذف هذا الطلب؟ لا يمكن التراجع عن هذا"
+        confirmLabel="حذف"
+        cancelLabel="إلغاء"
+        onConfirm={handleDeleteOrder}
+        onCancel={() => setShowDeleteModal(false)}
+        danger
+        loading={deleting}
+      />
       <div className="detail-header-nav">
         <button onClick={() => navigate('/orders')} className="back-link">
           <ArrowLeft size={18} /> Back to Orders
@@ -56,6 +89,16 @@ const OrderDetails = () => {
         <div className="header-meta">
           <h2>Order #{order.id.slice(-8).toUpperCase()}</h2>
           <OrderStatusBadge status={order.status} />
+          {order.status === 'cancelled' && (
+            <button
+              className="order-delete-btn"
+              onClick={() => setShowDeleteModal(true)}
+              title="Delete this order"
+            >
+              <Trash2 size={15} />
+              Delete Order
+            </button>
+          )}
         </div>
       </div>
 
