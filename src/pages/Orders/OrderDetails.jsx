@@ -11,7 +11,10 @@ import {
   ShoppingBag,
   Calendar,
   ExternalLink,
-  Trash2
+  Trash2,
+  Pencil,
+  Check,
+  X
 } from 'lucide-react';
 import OrderTimeline from '../../components/Order/OrderTimeline';
 import OrderStatusBadge from '../../components/Order/OrderStatusBadge';
@@ -25,6 +28,12 @@ const OrderDetails = () => {
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editPrice, setEditPrice] = useState("");
+  const [savingPrice, setSavingPrice] = useState(false);
+
+  // Item prices are editable unless the order reached a terminal state
+  const isPriceEditable = !['delivered', 'cancelled'].includes((order?.status || '').toLowerCase());
 
   const fetchOrderDetails = async () => {
     setLoading(true);
@@ -63,6 +72,46 @@ const OrderDetails = () => {
     } finally {
       setDeleting(false);
       setShowDeleteModal(false);
+    }
+  };
+
+  const getItemProductId = (item) => item?.productId ?? item?.product_id ?? item?.id ?? null;
+
+  const startPriceEdit = (idx, item) => {
+    setEditingIndex(idx);
+    setEditPrice(String(item.price));
+  };
+
+  const cancelPriceEdit = () => {
+    setEditingIndex(null);
+    setEditPrice("");
+  };
+
+  const savePriceEdit = async (item) => {
+    const pid = getItemProductId(item);
+    const price = Number(editPrice);
+    if (editPrice === "" || !Number.isFinite(price) || price <= 0) {
+      toast.error("Enter a valid price greater than 0");
+      return;
+    }
+    if (Math.round(price * 100) / 100 !== price) {
+      toast.error("Max 2 decimals allowed");
+      return;
+    }
+    setSavingPrice(true);
+    try {
+      const res = await api.patch(`/api/admin/orders/${order.id}/items/${pid}`, { price });
+      if (res.data.success) {
+        setOrder(res.data.data);
+        toast.success("Item price updated");
+        cancelPriceEdit();
+      } else {
+        toast.error(res.data.message || "Failed to update price");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Error updating price");
+    } finally {
+      setSavingPrice(false);
     }
   };
 
@@ -192,14 +241,66 @@ const OrderDetails = () => {
                 </tr>
               </thead>
               <tbody>
-                {order.items.map((item, idx) => (
+                {order.items.map((item, idx) => {
+                  const pid = getItemProductId(item);
+                  const canEdit = isPriceEditable && pid !== null;
+                  const isEditing = editingIndex === idx;
+                  return (
                   <tr key={idx}>
                     <td data-label="Product" className="font-semibold">{item.name}</td>
                     <td data-label="Quantity">x{item.quantity}</td>
-                    <td data-label="Price">{item.price} EGP</td>
+                    <td data-label="Price">
+                      {isEditing ? (
+                        <span className="price-edit-wrap">
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            className="price-edit-input"
+                            value={editPrice}
+                            onChange={(e) => setEditPrice(e.target.value)}
+                            disabled={savingPrice}
+                            aria-label={`New price for ${item.name}`}
+                          />
+                          <button
+                            className="price-edit-btn price-edit-save"
+                            onClick={() => savePriceEdit(item)}
+                            disabled={savingPrice}
+                            title="Save price"
+                            aria-label="Save price"
+                          >
+                            {savingPrice ? "…" : <Check size={14} />}
+                          </button>
+                          <button
+                            className="price-edit-btn price-edit-cancel"
+                            onClick={cancelPriceEdit}
+                            disabled={savingPrice}
+                            title="Cancel"
+                            aria-label="Cancel"
+                          >
+                            <X size={14} />
+                          </button>
+                        </span>
+                      ) : (
+                        <span className="price-display-wrap">
+                          {item.price} EGP
+                          {canEdit && (
+                            <button
+                              className="price-edit-icon-btn"
+                              onClick={() => startPriceEdit(idx, item)}
+                              title="Edit item price"
+                              aria-label={`Edit price for ${item.name}`}
+                            >
+                              <Pencil size={14} />
+                            </button>
+                          )}
+                        </span>
+                      )}
+                    </td>
                     <td data-label="Total" className="font-bold">{item.price * item.quantity} EGP</td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

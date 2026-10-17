@@ -856,3 +856,101 @@ html.dark .order-delete-btn:hover {
   background: var(--danger);
   color: #fff;
 }
+
+/* ─── Inline item-price editor (Order Details → Products table) ─── */
+.price-display-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-edit-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+}
+
+.price-edit-icon-btn:hover {
+  background: rgba(0, 180, 216, 0.1);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.price-edit-icon-btn:active {
+  transform: scale(0.95);
+}
+
+.price-edit-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.price-edit-input {
+  width: 90px;
+  max-width: 40vw;
+  padding: 6px 8px;
+  border: 1px solid var(--line-200);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+}
+
+.price-edit-input:focus {
+  border-color: var(--accent);
+}
+
+.price-edit-input:disabled {
+  opacity: 0.65;
+}
+
+.price-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 6px;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s, opacity 0.15s;
+}
+
+.price-edit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.price-edit-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.price-edit-save {
+  background: var(--accent);
+  color: #fff;
+}
+
+.price-edit-cancel {
+  background: var(--surface-sunken);
+  color: var(--ink-500);
+  border: 1px solid var(--border);
+}
+
+html.dark .price-edit-cancel {
+  color: var(--text-light);
+}
