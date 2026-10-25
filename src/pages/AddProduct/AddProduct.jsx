@@ -16,6 +16,7 @@ const AddProduct = ({ url, token, setToken }) => {
         manualCategory: "",
         brand: "",
         sku: "",
+        compatible_models: "",
     })
 
     const onChangeHandler = (event) => {
@@ -38,6 +39,7 @@ const AddProduct = ({ url, token, setToken }) => {
             isActive: true,
             ...(data.brand.trim() && { brand: data.brand.trim() }),
             ...(data.sku.trim()   && { sku:   data.sku.trim()   }),
+            ...(data.compatible_models.trim() && { compatible_models: data.compatible_models.trim() }),
         }
 
         try {
@@ -53,6 +55,7 @@ const AddProduct = ({ url, token, setToken }) => {
                     manualCategory: "",
                     brand: "",
                     sku: "",
+                    compatible_models: "",
                 })
                 setImageUrl("");
                 toast.success(response.data.message);
@@ -149,6 +152,11 @@ const AddProduct = ({ url, token, setToken }) => {
                                 <option value="Substitute">Substitute</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div className="add-product-description flex-col">
+                        <p>Compatible Models <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(optional — comma-separated)</span></p>
+                        <input onChange={onChangeHandler} value={data.compatible_models} type="text" name='compatible_models' placeholder='SSD3293U, G0054-C1TS, LG 32LH500' />
                     </div>
 
                     <div className="add-product-description flex-col">

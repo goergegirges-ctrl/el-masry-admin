@@ -20,6 +20,7 @@ const EditProduct = ({ url, token, setToken }) => {
         isActive: true,
         brand: "",
         sku: "",
+        compatible_models: "",
     })
 
     const fetchProductDetails = useCallback(async () => {
@@ -37,6 +38,7 @@ const EditProduct = ({ url, token, setToken }) => {
                     isActive: product.isActive,
                     brand: product.brand || "",
                     sku: product.sku || "",
+                    compatible_models: product.compatible_models || "",
                 });
                 setImageUrl((product.images && product.images.length > 0) ? product.images[0] : (product.image || ""));
             }
@@ -74,6 +76,7 @@ const EditProduct = ({ url, token, setToken }) => {
             isActive: data.isActive,
             brand: data.brand.trim() || null,
             sku:   data.sku.trim()   || null,
+            compatible_models: data.compatible_models.trim() || null,
         }
 
         if (imageUrl && imageUrl.trim() !== '') {
@@ -140,6 +143,11 @@ const EditProduct = ({ url, token, setToken }) => {
                             <p>SKU / MPN <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(optional)</span></p>
                             <input onChange={onChangeHandler} value={data.sku} type="text" name='sku' placeholder='e.g. BN44-00442A' />
                         </div>
+                    </div>
+
+                    <div className="add-product-description flex-col">
+                        <p>Compatible Models <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(optional — comma-separated)</span></p>
+                        <input onChange={onChangeHandler} value={data.compatible_models} type="text" name='compatible_models' placeholder='SSD3293U, G0054-C1TS, LG 32LH500' />
                     </div>
 
                     <div className="add-product-description flex-col">

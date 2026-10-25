@@ -254,6 +254,7 @@ const Products = ({ url, token, setToken }) => {
                         Stock: p.stock,
                         SKU: p.sku || '',
                         Brand: p.brand || '',
+                        'Compatible Models': p.compatible_models || '',
                         Condition: p.condition || '',
                         Active: p.isActive ? 'Yes' : 'No',
                         Featured: p.featured ? 'Yes' : 'No',
